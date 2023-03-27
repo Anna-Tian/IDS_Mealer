@@ -81,12 +81,11 @@ struct ViewFoodStorage: View {
         GridItem(.adaptive(minimum: 100))
     ]
     
-    @State private var selectSelectionView: Bool = false
+    @State private var isSelectionView: Bool = false
     @State private var selectSort: Int = 0
     @State private var switchListView: Bool = false
-    @State private var countIngredients: Int = 0
     
-    
+    @State private var countSelected: Int = 0
     
     var body: some View {
         VStack {
@@ -95,7 +94,7 @@ struct ViewFoodStorage: View {
                     HStack{
                         Spacer()
                         Button(action: selectionView, label: {
-                            if selectSelectionView {
+                            if isSelectionView {
                                 Image(systemName: "checkmark.square.fill")
                                     .font(.system(size: 25))
                             } else {
@@ -119,23 +118,13 @@ struct ViewFoodStorage: View {
                     ScrollView {
                         LazyVGrid(columns: adaptiveColumns, spacing: 20) {
                             ForEach(existingIngredients) { existingIngredient in
-                                IngredientsGridList(existingIngredient: existingIngredient, selectSelectionView: selectSelectionView, countIngredients: countIngredients)
+                                IngredientsGridList(existingIngredient: existingIngredient, isSelectionView: isSelectionView, countSelected: $countSelected)
                             }
                         }
                     }
-                    if selectSelectionView {
+                    if isSelectionView {
                         Divider()
-                        HStack {
-                            Spacer()
-                            Text("select ingredient")
-                            Spacer()
-                            Button(action: switchView, label: {
-                                Image(systemName: "trash")
-                                    .resizable()
-                                    .frame(width: 25, height: 25)
-                            })
-                        }
-                        .frame(maxWidth: .infinity, maxHeight: 50)
+                        countSelectedIngredients(countIngredients: countSelected)
                     }
                     if results.count > 0 {
                         Text("\(results.count)")
@@ -187,7 +176,7 @@ struct ViewFoodStorage: View {
         
     }
     private func selectionView() {
-        self.selectSelectionView = !self.selectSelectionView
+        self.isSelectionView = !self.isSelectionView
     }
     private func sortIngredients() {
         
@@ -222,10 +211,11 @@ struct ViewFoodStorage_Previews: PreviewProvider {
 
 struct IngredientsGridList: View {
     var existingIngredient: Ingredient;
-    var selectSelectionView: Bool;
-    @State var countIngredients: Int;
-    @State var isSelected: Bool = false;
+    var isSelectionView: Bool;
     @State var viewWidth: CGFloat = 115;
+    
+    @State var isSelected: Bool = false;
+    @Binding var countSelected: Int;
     
     var body: some View {
         VStack(spacing:6) {
@@ -265,7 +255,7 @@ struct IngredientsGridList: View {
                 //                                            .border(Color.gray, width: 2)
                     .frame(height: 20, alignment: .top)
                 Spacer()
-                if (selectSelectionView) {
+                if (isSelectionView) {
                     if (isSelected == true) {
                         Image(systemName: "checkmark.circle.fill");
                     } else {
@@ -280,15 +270,49 @@ struct IngredientsGridList: View {
         .cornerRadius(5)
         .contentShape(Rectangle())
         .onTapGesture {
-            if(selectSelectionView) {
+            if(isSelectionView) {
                 isSelected = !isSelected;
-                selectedList()
+                countSelected = isSelected ? countSelected+1 : countSelected-1;
             }
         }
     }
+}
+
+struct countSelectedIngredients: View {
+    var countIngredients: Int
+    @State private var isShowingDialog: Bool = false
     
-    private func selectedList() {
-        countIngredients += 1
-        print("\(countIngredients) ingredient selected")
+    var body: some View {
+        HStack {
+            Spacer()
+//            Text("\(countIngredients) select ingredient")
+            Text(countIngredients > 0 ?
+                    countIngredients == 1 ?
+                        "1 Ingredient Selected" : "\(countIngredients) Ingredients Selected"
+                    : "Select Ingredients")
+            Spacer()
+            Button{
+                isShowingDialog = true
+            } label: {
+                Image(systemName: "trash")
+                    .resizable()
+                    .frame(width: 25, height: 25)
+            }
+            .disabled(countIngredients == 0)
+            .confirmationDialog(
+                "Are you sure?",
+                isPresented: $isShowingDialog
+            ) {
+                Button("Delete", role: .destructive) {
+                    
+                }
+                Button("Cancel", role: .cancel) {
+                    isShowingDialog = false
+                }
+            } message: {
+                Text(countIngredients == 1 ? "Delete 1 Ingredient?" : "Delete \(countIngredients) Ingredients?")
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: 50)
     }
 }
