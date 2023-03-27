@@ -15,6 +15,9 @@ struct Ingredient: Identifiable {
     var isSelected: Bool
     var isNew: Bool
 }
+enum Sort {
+    case expireDate, createdAscending, createdDescending, nameAscending, nameDescending
+}
 extension String {
     func load() -> UIImage {
         do {
@@ -103,11 +106,32 @@ struct ViewFoodStorage: View {
                             }
                             
                         })
-                        Button(action: sortIngredients, label: {
+                        Menu{
+                            Button(action: { sortIngredients(sort: .expireDate) }) {
+                                Image(systemName: "photo")
+                                Text("Sort by expire date")
+                            }
+                            Button(action: { sortIngredients(sort: .createdAscending) }) {
+                                Image(systemName: "photo")
+                                Text("Sort by added date ascending")
+                            }
+                            Button(action: { sortIngredients(sort: .createdDescending) }) {
+                                Image(systemName: "photo")
+                                Text("Sort by added date descending")
+                            }
+                            Button(action: { sortIngredients(sort: .nameAscending) }) {
+                                Image(systemName: "photo")
+                                Text("Sort by name ascending")
+                            }
+                            Button(action: { sortIngredients(sort: .nameDescending) }) {
+                                Image(systemName: "photo")
+                                Text("Sort by name descending")
+                            }
+                        } label: {
                             Image("expire")
                                 .resizable()
                                 .frame(width: 25, height: 25)
-                        })
+                        }
                         Button(action: switchView, label: {
                             Image("grid-view-rounded")
                                 .resizable()
@@ -178,7 +202,19 @@ struct ViewFoodStorage: View {
     private func selectionView() {
         self.isSelectionView = !self.isSelectionView
     }
-    private func sortIngredients() {
+    private func sortIngredients(sort: Sort) {
+        switch sort {
+        case .expireDate:
+            existingIngredients = existingIngredients.sorted(by: {$0.expire < $1.expire})
+        case .createdAscending:
+            print("")
+        case .createdDescending:
+            print("")
+        case .nameAscending:
+            existingIngredients = existingIngredients.sorted(by: {$0.name < $1.name})
+        case .nameDescending:
+            existingIngredients = existingIngredients.sorted(by: {$0.name > $1.name})
+        }
         
     }
     private func switchView() {
@@ -219,12 +255,21 @@ struct IngredientsGridList: View {
         ForEach(existingIngredients + results, id: \.id) { ingredient in
             VStack(spacing:6) {
                 ZStack {
-                    Rectangle()
-    //                Image(uiImage: "\(existingIngredient.image)".load())
-    //                    .resizable()
-                        .frame(width: viewWidth, height: 120)
-    //                    .border(Color.gray, width: 2)
-                        .opacity(0.5)
+                    if ingredient.isSelected {
+                        Rectangle()
+        //                Image(uiImage: "\(existingIngredient.image)".load())
+        //                    .resizable()
+                            .frame(width: viewWidth, height: 120)
+        //                    .border(Color.gray, width: 2)
+                            .opacity(0.3)
+                    } else {
+                        Rectangle()
+        //                Image(uiImage: "\(existingIngredient.image)".load())
+        //                    .resizable()
+                            .frame(width: viewWidth, height: 120)
+        //                    .border(Color.gray, width: 2)
+                            .opacity(0.5)
+                    }
                     if ingredient.expire > 0 {
                         Text("\(ingredient.expire) days")
                             .font(.system(size: 20, weight: .bold))
