@@ -13,6 +13,7 @@ struct Ingredient: Identifiable {
     var weight: String
     let image: String
     var isSelected: Bool
+    var isNew: Bool
 }
 extension String {
     func load() -> UIImage {
@@ -37,44 +38,44 @@ struct ViewFoodStorage: View {
     @State private var showSannerSheet = false
     @State private var texts:[ScanData] = []
     @State private var ingredientLibrary: [Ingredient] = [
-        Ingredient(name: "Spinach", expire: 3, weight: "250 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-        Ingredient(name: "Carrot", expire: 7, weight: "500 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-        Ingredient(name: "Broccoli", expire: 5, weight: "500 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-        Ingredient(name: "Cauliflower", expire: 5, weight: "500 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-        Ingredient(name: "Lettuce", expire: 2, weight: "1 piece", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-        Ingredient(name: "Cabbage", expire: 7, weight: "1 head", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-        Ingredient(name: "Tomato", expire: 4, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-        Ingredient(name: "Pepper", expire: 7, weight: "500 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-        Ingredient(name: "Onion", expire: 14, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-        Ingredient(name: "Garlic", expire: 30, weight: "250 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-        Ingredient(name: "Potato", expire: 30, weight: "2 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-        Ingredient(name: "Sweet potato", expire: 14, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-        Ingredient(name: "Zucchini", expire: 5, weight: "500 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-        Ingredient(name: "Eggplant", expire: 7, weight: "500 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-        Ingredient(name: "Cucumber", expire: 5, weight: "500 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-        Ingredient(name: "Green beans", expire: 3, weight: "250 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-        Ingredient(name: "Peas", expire: 3, weight: "250 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-        Ingredient(name: "Corn", expire: 3, weight: "4 ears", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-        Ingredient(name: "Corn", expire: 3, weight: "4 ears", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false)
+        Ingredient(name: "Spinach", expire: 3, weight: "250 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: true),
+        Ingredient(name: "Carrot", expire: 7, weight: "500 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: true),
+        Ingredient(name: "Broccoli", expire: 5, weight: "500 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: true),
+        Ingredient(name: "Cauliflower", expire: 5, weight: "500 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: true),
+        Ingredient(name: "Lettuce", expire: 2, weight: "1 piece", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: true),
+        Ingredient(name: "Cabbage", expire: 7, weight: "1 head", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: true),
+        Ingredient(name: "Tomato", expire: 4, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: true),
+        Ingredient(name: "Pepper", expire: 7, weight: "500 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: true),
+        Ingredient(name: "Onion", expire: 14, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: true),
+        Ingredient(name: "Garlic", expire: 30, weight: "250 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: true),
+        Ingredient(name: "Potato", expire: 30, weight: "2 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: true),
+        Ingredient(name: "Sweet potato", expire: 14, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: true),
+        Ingredient(name: "Zucchini", expire: 5, weight: "500 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: true),
+        Ingredient(name: "Eggplant", expire: 7, weight: "500 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: true),
+        Ingredient(name: "Cucumber", expire: 5, weight: "500 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: true),
+        Ingredient(name: "Green beans", expire: 3, weight: "250 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: true),
+        Ingredient(name: "Peas", expire: 3, weight: "250 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: true),
+        Ingredient(name: "Corn", expire: 3, weight: "4 ears", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: true),
+        Ingredient(name: "Corn", expire: 3, weight: "4 ears", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: true)
     ]
     @State private var existingIngredients: [Ingredient] = [
-        Ingredient(name: "Broccoli", expire: -3, weight: "500 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-        Ingredient(name: "Carrots", expire: -5, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-        Ingredient(name: "Tomatoes", expire: -4, weight: "750 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-        Ingredient(name: "Lettuce", expire: 2, weight: "1 piece", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-        Ingredient(name: "Apples", expire: 10, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-        Ingredient(name: "Bananas", expire: 5, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-        Ingredient(name: "Oranges", expire: 7, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-        Ingredient(name: "Beef", expire: 3, weight: "500 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-        Ingredient(name: "Chicken breast", expire: 2, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-        Ingredient(name: "Pork", expire: 4, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-        Ingredient(name: "Eggs", expire: 5, weight: "12 pieces", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-        Ingredient(name: "Milk", expire: 7, weight: "1 liter", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-        Ingredient(name: "Flour", expire: 365, weight: "2.27 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-        Ingredient(name: "Black paper sauce", expire: 365, weight: "2.27 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-        Ingredient(name: "Sugar", expire: 365, weight: "907 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-        Ingredient(name: "Salt", expire: 365, weight: "454 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-        Ingredient(name: "Pepper", expire: 365, weight: "113 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false)
+        Ingredient(name: "Broccoli", expire: -3, weight: "500 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
+        Ingredient(name: "Carrots", expire: -5, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
+        Ingredient(name: "Tomatoes", expire: -4, weight: "750 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
+        Ingredient(name: "Lettuce", expire: 2, weight: "1 piece", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
+        Ingredient(name: "Apples", expire: 10, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
+        Ingredient(name: "Bananas", expire: 5, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
+        Ingredient(name: "Oranges", expire: 7, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
+        Ingredient(name: "Beef", expire: 3, weight: "500 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
+        Ingredient(name: "Chicken breast", expire: 2, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
+        Ingredient(name: "Pork", expire: 4, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
+        Ingredient(name: "Eggs", expire: 5, weight: "12 pieces", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
+        Ingredient(name: "Milk", expire: 7, weight: "1 liter", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
+        Ingredient(name: "Flour", expire: 365, weight: "2.27 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
+        Ingredient(name: "Black paper sauce", expire: 365, weight: "2.27 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
+        Ingredient(name: "Sugar", expire: 365, weight: "907 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
+        Ingredient(name: "Salt", expire: 365, weight: "454 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
+        Ingredient(name: "Pepper", expire: 365, weight: "113 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false)
     ]
     
     @State private var results:[Ingredient] = []
@@ -116,29 +117,12 @@ struct ViewFoodStorage: View {
                     .frame(height: 25, alignment: .trailing)
                     ScrollView {
                         LazyVGrid(columns: adaptiveColumns, spacing: 20) {
-                            IngredientsGridList(existingIngredients: $existingIngredients, isSelectionView: isSelectionView)
+                            IngredientsGridList(existingIngredients: $existingIngredients, results: $results, isSelectionView: isSelectionView)
                         }
                     }
                     if isSelectionView {
                         Divider()
-                        countSelectedIngredients(existingIngredients: $existingIngredients)
-                    }
-                    if results.count > 0 {
-                        Text("\(results.count)")
-                        ScrollView {
-                            LazyVGrid(columns: adaptiveColumns, spacing: 20) {
-                                ForEach(results) { result in
-                                    ZStack {
-                                        Rectangle()
-                                            .frame(width: 100, height: 100)
-                                            .foregroundColor(.mint)
-                                            .cornerRadius(30)
-                                        Text("\(result.name)")
-                                            .font(.system(size: 16, weight: .medium))
-                                    }
-                                }
-                            }
-                        }
+                        countSelectedIngredients(existingIngredients: $existingIngredients, results: $results)
                     }
                 }
                 .navigationBarItems(
@@ -154,23 +138,23 @@ struct ViewFoodStorage: View {
                             texts = []
                             results = []
                             existingIngredients = [
-                                Ingredient(name: "Broccoli", expire: -3, weight: "500 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-                                Ingredient(name: "Carrots", expire: -5, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-                                Ingredient(name: "Tomatoes", expire: -4, weight: "750 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-                                Ingredient(name: "Lettuce", expire: 2, weight: "1 piece", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-                                Ingredient(name: "Apples", expire: 10, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-                                Ingredient(name: "Bananas", expire: 5, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-                                Ingredient(name: "Oranges", expire: 7, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-                                Ingredient(name: "Beef", expire: 3, weight: "500 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-                                Ingredient(name: "Chicken breast", expire: 2, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-                                Ingredient(name: "Pork", expire: 4, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-                                Ingredient(name: "Eggs", expire: 5, weight: "12 pieces", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-                                Ingredient(name: "Milk", expire: 7, weight: "1 liter", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-                                Ingredient(name: "Flour", expire: 365, weight: "2.27 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-                                Ingredient(name: "Black paper sauce", expire: 365, weight: "2.27 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-                                Ingredient(name: "Sugar", expire: 365, weight: "907 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-                                Ingredient(name: "Salt", expire: 365, weight: "454 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false),
-                                Ingredient(name: "Pepper", expire: 365, weight: "113 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false)
+                                Ingredient(name: "Broccoli", expire: -3, weight: "500 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
+                                Ingredient(name: "Carrots", expire: -5, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
+                                Ingredient(name: "Tomatoes", expire: -4, weight: "750 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
+                                Ingredient(name: "Lettuce", expire: 2, weight: "1 piece", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
+                                Ingredient(name: "Apples", expire: 10, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
+                                Ingredient(name: "Bananas", expire: 5, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
+                                Ingredient(name: "Oranges", expire: 7, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
+                                Ingredient(name: "Beef", expire: 3, weight: "500 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
+                                Ingredient(name: "Chicken breast", expire: 2, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
+                                Ingredient(name: "Pork", expire: 4, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
+                                Ingredient(name: "Eggs", expire: 5, weight: "12 pieces", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
+                                Ingredient(name: "Milk", expire: 7, weight: "1 liter", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
+                                Ingredient(name: "Flour", expire: 365, weight: "2.27 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
+                                Ingredient(name: "Black paper sauce", expire: 365, weight: "2.27 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
+                                Ingredient(name: "Sugar", expire: 365, weight: "907 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
+                                Ingredient(name: "Salt", expire: 365, weight: "454 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
+                                Ingredient(name: "Pepper", expire: 365, weight: "113 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false)
                             ]
                         }, label: {
                             Text("Clear")
@@ -227,11 +211,12 @@ struct ViewFoodStorage_Previews: PreviewProvider {
 
 struct IngredientsGridList: View {
     @Binding var existingIngredients: [Ingredient]
+    @Binding var results: [Ingredient]
     var isSelectionView: Bool;
     @State var viewWidth: CGFloat = 115;
     
     var body: some View {
-        ForEach(existingIngredients, id: \.id) { ingredient in
+        ForEach(existingIngredients + results, id: \.id) { ingredient in
             VStack(spacing:6) {
                 ZStack {
                     Rectangle()
@@ -257,16 +242,21 @@ struct IngredientsGridList: View {
                                 )
                             )
                     }
+                    if ingredient.isNew {
+                        Text("New*")
+                            .frame(width: 50, height: 50)
+                            .offset(x: viewWidth / 3.5, y: -50)
+                    }
                 }
                 Text("\(ingredient.name)")
                     .font(.system(size: 16, weight: .medium))
                     .frame(width: viewWidth, height: 40, alignment: .top)
                     .multilineTextAlignment(.center)
                     .lineLimit(2)
-                //                                        .border(Color.gray, width: 2)
+//                  .border(Color.gray, width: 2)
                 HStack {
                     Text("\(ingredient.weight)")
-                    //                                            .border(Color.gray, width: 2)
+//                      .border(Color.gray, width: 2)
                         .frame(height: 20, alignment: .top)
                     Spacer()
                     if (isSelectionView) {
@@ -288,6 +278,9 @@ struct IngredientsGridList: View {
                     if let index = existingIngredients.firstIndex(where: { $0.id == ingredient.id }) {
                         existingIngredients[index].isSelected.toggle()
                     }
+                    if let index = results.firstIndex(where: { $0.id == ingredient.id }) {
+                        results[index].isSelected.toggle()
+                    }
                 }
             }
         }
@@ -297,11 +290,12 @@ struct IngredientsGridList: View {
 
 struct countSelectedIngredients: View {
     @Binding var existingIngredients: [Ingredient]
+    @Binding var results: [Ingredient]
     @State private var isShowingDialog: Bool = false
     
     var body: some View {
         HStack {
-            let countIngredients = existingIngredients.filter{$0.isSelected}.count;
+            let countIngredients = existingIngredients.filter{$0.isSelected}.count + results.filter{$0.isSelected}.count;
             Spacer()
 //            Text("\(countIngredients) select ingredient")
             Text(countIngredients > 0 ?
@@ -336,5 +330,6 @@ struct countSelectedIngredients: View {
     
     private func deleteIngredients() {
         existingIngredients.removeAll(where: {$0.isSelected})
+        results.removeAll(where: {$0.isSelected})
     }
 }
