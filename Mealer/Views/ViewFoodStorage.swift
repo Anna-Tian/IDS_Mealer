@@ -89,6 +89,8 @@ struct ViewFoodStorage: View {
     @State private var isSelectionView: Bool = false
     @State private var selectSort: Int = 0
     @State private var switchListView: Bool = false
+    
+    @State private var newIngredients:[Ingredient] = []
         
     var body: some View {
         VStack {
@@ -141,12 +143,12 @@ struct ViewFoodStorage: View {
                     .frame(height: 25, alignment: .trailing)
                     ScrollView {
                         LazyVGrid(columns: adaptiveColumns, spacing: 20) {
-                            IngredientsGridList(existingIngredients: $existingIngredients, results: $results, isSelectionView: isSelectionView)
+                            IngredientsGridList(newIngredients: $newIngredients, isSelectionView: isSelectionView)
                         }
                     }
                     if isSelectionView {
                         Divider()
-                        countSelectedIngredients(existingIngredients: $existingIngredients, results: $results)
+                        countSelectedIngredients(newIngredients: $newIngredients)
                     }
                 }
                 .navigationBarItems(
@@ -180,6 +182,7 @@ struct ViewFoodStorage: View {
                                 Ingredient(name: "Salt", expire: 365, weight: "454 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
                                 Ingredient(name: "Pepper", expire: 365, weight: "113 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false)
                             ]
+                            newIngredients = existingIngredients + results
                         }, label: {
                             Text("Clear")
                         })
@@ -197,7 +200,11 @@ struct ViewFoodStorage: View {
             }
         }
         .padding()
-        
+        .onAppear {
+            if (newIngredients.isEmpty) {
+                newIngredients = existingIngredients + results
+            }
+        }
     }
     private func selectionView() {
         self.isSelectionView = !self.isSelectionView
@@ -205,15 +212,15 @@ struct ViewFoodStorage: View {
     private func sortIngredients(sort: Sort) {
         switch sort {
         case .expireDate:
-            existingIngredients = existingIngredients.sorted(by: {$0.expire < $1.expire})
+            newIngredients = newIngredients.sorted(by: {$0.expire < $1.expire})
         case .createdAscending:
             print("")
         case .createdDescending:
             print("")
         case .nameAscending:
-            existingIngredients = existingIngredients.sorted(by: {$0.name < $1.name})
+            newIngredients = newIngredients.sorted(by: {$0.name < $1.name})
         case .nameDescending:
-            existingIngredients = existingIngredients.sorted(by: {$0.name > $1.name})
+            newIngredients = newIngredients.sorted(by: {$0.name > $1.name})
         }
         
     }
@@ -228,6 +235,7 @@ struct ViewFoodStorage: View {
                 for ingredient in ingredientLibrary {
                     if (newScanData.content.contains(ingredient.name)) {
                         results.append(ingredient)
+                        newIngredients.append(ingredient)
                     }
                 }
                 
@@ -246,16 +254,15 @@ struct ViewFoodStorage_Previews: PreviewProvider {
 
 
 struct IngredientsGridList: View {
-    @Binding var existingIngredients: [Ingredient]
-    @Binding var results: [Ingredient]
+    @Binding var newIngredients: [Ingredient]
     var isSelectionView: Bool;
     @State var viewWidth: CGFloat = 115;
     
     var body: some View {
-        ForEach(existingIngredients + results, id: \.id) { ingredient in
+        ForEach(newIngredients, id: \.id) { ingredient in
             VStack(spacing:6) {
                 ZStack {
-                    if ingredient.isSelected {
+                    if ingredient.isSelected && isSelectionView {
                         Rectangle()
         //                Image(uiImage: "\(existingIngredient.image)".load())
         //                    .resizable()
@@ -298,10 +305,8 @@ struct IngredientsGridList: View {
                     .frame(width: viewWidth, height: 40, alignment: .top)
                     .multilineTextAlignment(.center)
                     .lineLimit(2)
-//                  .border(Color.gray, width: 2)
                 HStack {
                     Text("\(ingredient.weight)")
-//                      .border(Color.gray, width: 2)
                         .frame(height: 20, alignment: .top)
                     Spacer()
                     if (isSelectionView) {
@@ -320,11 +325,8 @@ struct IngredientsGridList: View {
             .contentShape(Rectangle())
             .onTapGesture {
                 if isSelectionView {
-                    if let index = existingIngredients.firstIndex(where: { $0.id == ingredient.id }) {
-                        existingIngredients[index].isSelected.toggle()
-                    }
-                    if let index = results.firstIndex(where: { $0.id == ingredient.id }) {
-                        results[index].isSelected.toggle()
+                    if let index = newIngredients.firstIndex(where: { $0.id == ingredient.id }) {
+                        newIngredients[index].isSelected.toggle()
                     }
                 }
             }
@@ -334,15 +336,13 @@ struct IngredientsGridList: View {
 }
 
 struct countSelectedIngredients: View {
-    @Binding var existingIngredients: [Ingredient]
-    @Binding var results: [Ingredient]
+    @Binding var newIngredients: [Ingredient]
     @State private var isShowingDialog: Bool = false
     
     var body: some View {
         HStack {
-            let countIngredients = existingIngredients.filter{$0.isSelected}.count + results.filter{$0.isSelected}.count;
+            let countIngredients = newIngredients.filter{$0.isSelected}.count;
             Spacer()
-//            Text("\(countIngredients) select ingredient")
             Text(countIngredients > 0 ?
                     countIngredients == 1 ?
                         "1 Ingredient Selected" : "\(countIngredients) Ingredients Selected"
@@ -374,7 +374,6 @@ struct countSelectedIngredients: View {
     }
     
     private func deleteIngredients() {
-        existingIngredients.removeAll(where: {$0.isSelected})
-        results.removeAll(where: {$0.isSelected})
+        newIngredients.removeAll(where: {$0.isSelected})
     }
 }
