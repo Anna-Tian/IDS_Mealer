@@ -13,7 +13,7 @@ struct ContentView: View {
         TabView {
             ViewRecipe()
                 .tabItem() {
-                    Image(systemName: "book.closed")
+                    Image(systemName: "text.book.closed.fill")
                     Text("Recipe")
                 }
             ViewFoodStorage()
@@ -23,17 +23,12 @@ struct ContentView: View {
                 }
             ViewHealth()
                 .tabItem() {
-                    Image(systemName: "heart.circle")
+                    Image(systemName: "chart.xyaxis.line")
                     Text("Health")
-                }
-            ViewCommunity()
-                .tabItem() {
-                    Image(systemName: "fork.knife")
-                    Text("Community")
                 }
             ViewProfile()
                 .tabItem() {
-                    Image(systemName: "person")
+                    Image(systemName: "person.fill")
                     Text("Profile")
                 }
         }

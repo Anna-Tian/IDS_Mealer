@@ -10,7 +10,6 @@
 		956C9E1029D1BAE200DE1FA0 /* ViewRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956C9E0F29D1BAE200DE1FA0 /* ViewRecipe.swift */; };
 		956C9E1229D1BAF100DE1FA0 /* ViewFoodStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956C9E1129D1BAF100DE1FA0 /* ViewFoodStorage.swift */; };
 		956C9E1429D1BAFA00DE1FA0 /* ViewHealth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956C9E1329D1BAFA00DE1FA0 /* ViewHealth.swift */; };
-		956C9E1629D1BB0900DE1FA0 /* ViewCommunity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956C9E1529D1BB0900DE1FA0 /* ViewCommunity.swift */; };
 		956C9E1829D1BB1100DE1FA0 /* ViewProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956C9E1729D1BB1100DE1FA0 /* ViewProfile.swift */; };
 		95B98BF629C88D2C00EF4E73 /* MealerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B98BF529C88D2C00EF4E73 /* MealerApp.swift */; };
 		95B98BF829C88D2C00EF4E73 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B98BF729C88D2C00EF4E73 /* ContentView.swift */; };
@@ -25,7 +24,6 @@
 		956C9E0F29D1BAE200DE1FA0 /* ViewRecipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRecipe.swift; sourceTree = "<group>"; };
 		956C9E1129D1BAF100DE1FA0 /* ViewFoodStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewFoodStorage.swift; sourceTree = "<group>"; };
 		956C9E1329D1BAFA00DE1FA0 /* ViewHealth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewHealth.swift; sourceTree = "<group>"; };
-		956C9E1529D1BB0900DE1FA0 /* ViewCommunity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewCommunity.swift; sourceTree = "<group>"; };
 		956C9E1729D1BB1100DE1FA0 /* ViewProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewProfile.swift; sourceTree = "<group>"; };
 		95B98BF229C88D2C00EF4E73 /* Mealer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mealer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		95B98BF529C88D2C00EF4E73 /* MealerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealerApp.swift; sourceTree = "<group>"; };
@@ -54,7 +52,6 @@
 				956C9E0F29D1BAE200DE1FA0 /* ViewRecipe.swift */,
 				956C9E1129D1BAF100DE1FA0 /* ViewFoodStorage.swift */,
 				956C9E1329D1BAFA00DE1FA0 /* ViewHealth.swift */,
-				956C9E1529D1BB0900DE1FA0 /* ViewCommunity.swift */,
 				956C9E1729D1BB1100DE1FA0 /* ViewProfile.swift */,
 			);
 			path = Views;
@@ -169,7 +166,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				956C9E1629D1BB0900DE1FA0 /* ViewCommunity.swift in Sources */,
 				95B98C0629C88D9B00EF4E73 /* TextRecognizer.swift in Sources */,
 				95B98C0429C88D8E00EF4E73 /* ScannerView.swift in Sources */,
 				95B98BF829C88D2C00EF4E73 /* ContentView.swift in Sources */,

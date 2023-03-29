@@ -16,7 +16,7 @@ struct Ingredient: Identifiable {
     var isNew: Bool
 }
 enum Sort {
-    case expireDate, createdAscending, createdDescending, nameAscending, nameDescending
+    case expireDate, category, nameAscending, nameDescending
 }
 extension String {
     func load() -> UIImage {
@@ -41,49 +41,50 @@ struct ViewFoodStorage: View {
     @State private var showSannerSheet = false
     @State private var texts:[ScanData] = []
     @State private var ingredientLibrary: [Ingredient] = [
-        Ingredient(name: "Spinach", expire: 3, weight: "250 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: true),
-        Ingredient(name: "Carrot", expire: 7, weight: "500 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: true),
-        Ingredient(name: "Broccoli", expire: 5, weight: "500 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: true),
-        Ingredient(name: "Cauliflower", expire: 5, weight: "500 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: true),
-        Ingredient(name: "Lettuce", expire: 2, weight: "1 piece", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: true),
-        Ingredient(name: "Cabbage", expire: 7, weight: "1 head", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: true),
-        Ingredient(name: "Tomato", expire: 4, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: true),
-        Ingredient(name: "Pepper", expire: 7, weight: "500 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: true),
-        Ingredient(name: "Onion", expire: 14, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: true),
-        Ingredient(name: "Garlic", expire: 30, weight: "250 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: true),
-        Ingredient(name: "Potato", expire: 30, weight: "2 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: true),
-        Ingredient(name: "Sweet potato", expire: 14, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: true),
-        Ingredient(name: "Zucchini", expire: 5, weight: "500 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: true),
-        Ingredient(name: "Eggplant", expire: 7, weight: "500 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: true),
-        Ingredient(name: "Cucumber", expire: 5, weight: "500 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: true),
-        Ingredient(name: "Green beans", expire: 3, weight: "250 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: true),
-        Ingredient(name: "Peas", expire: 3, weight: "250 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: true),
-        Ingredient(name: "Corn", expire: 3, weight: "4 ears", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: true),
-        Ingredient(name: "Corn", expire: 3, weight: "4 ears", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: true)
+        Ingredient(name: "Spinach", expire: 3, weight: "250 g", image: "https://assets.woolworths.com.au/images/1005/194947.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: true),
+        Ingredient(name: "Carrot", expire: 7, weight: "500 g", image: "https://assets.woolworths.com.au/images/1005/135344.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: true),
+        Ingredient(name: "Broccoli", expire: 5, weight: "500 g", image: "https://assets.woolworths.com.au/images/1005/134681.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: true),
+        Ingredient(name: "Cauliflower", expire: 5, weight: "500 g", image: "https://assets.woolworths.com.au/images/1005/135552.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: true),
+        Ingredient(name: "Lettuce", expire: 2, weight: "1 pc", image: "https://assets.woolworths.com.au/images/1005/154340.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: true),
+        Ingredient(name: "Cabbage", expire: 7, weight: "1 head", image: "https://assets.woolworths.com.au/images/1005/134923.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: true),
+        Ingredient(name: "Tomato", expire: 4, weight: "1 kg", image: "https://assets.woolworths.com.au/images/1005/134034.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: true),
+        Ingredient(name: "Pepper", expire: 7, weight: "500 g", image: "https://assets.woolworths.com.au/images/1005/98800.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: true),
+        Ingredient(name: "Onion", expire: 14, weight: "1 kg", image: "https://assets.woolworths.com.au/images/1005/144329.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: true),
+        Ingredient(name: "Garlic", expire: 30, weight: "250 g", image: "https://assets.woolworths.com.au/images/1005/713429.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: true),
+        Ingredient(name: "Potato", expire: 30, weight: "2 kg", image: "https://assets.woolworths.com.au/images/1005/246566.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: true),
+        Ingredient(name: "Sweet potato", expire: 14, weight: "1 kg", image: "https://assets.woolworths.com.au/images/1005/147071.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: true),
+        Ingredient(name: "Zucchini", expire: 5, weight: "500 g", image: "https://assets.woolworths.com.au/images/1005/174172.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: true),
+        Ingredient(name: "Eggplant", expire: 7, weight: "500 g", image: "https://assets.woolworths.com.au/images/1005/174095.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: true),
+        Ingredient(name: "Cucumber", expire: 5, weight: "500 g", image: "https://assets.woolworths.com.au/images/1005/137130.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: true),
+        Ingredient(name: "Green beans", expire: 3, weight: "250 g", image: "https://assets.woolworths.com.au/images/1005/134072.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: true),
+        Ingredient(name: "Peas", expire: 15, weight: "500 g", image: "https://assets.woolworths.com.au/images/1005/96206.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: true),
+        Ingredient(name: "Corn", expire: 3, weight: "4 ears", image: "https://cdn0.woolworths.media/content/wowproductimages/large/149374.jpg", isSelected: false, isNew: true)
     ]
     @State private var existingIngredients: [Ingredient] = [
-        Ingredient(name: "Broccoli", expire: -3, weight: "500 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
-        Ingredient(name: "Carrots", expire: -5, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
-        Ingredient(name: "Tomatoes", expire: -4, weight: "750 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
-        Ingredient(name: "Lettuce", expire: 2, weight: "1 piece", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
-        Ingredient(name: "Apples", expire: 10, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
-        Ingredient(name: "Bananas", expire: 5, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
-        Ingredient(name: "Oranges", expire: 7, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
-        Ingredient(name: "Beef", expire: 3, weight: "500 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
-        Ingredient(name: "Chicken breast", expire: 2, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
-        Ingredient(name: "Pork", expire: 4, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
-        Ingredient(name: "Eggs", expire: 5, weight: "12 pieces", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
-        Ingredient(name: "Milk", expire: 7, weight: "1 liter", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
-        Ingredient(name: "Flour", expire: 365, weight: "2.27 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
-        Ingredient(name: "Black paper sauce", expire: 365, weight: "2.27 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
-        Ingredient(name: "Sugar", expire: 365, weight: "907 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
-        Ingredient(name: "Salt", expire: 365, weight: "454 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
-        Ingredient(name: "Pepper", expire: 365, weight: "113 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false)
+        Ingredient(name: "Broccoli", expire: -3, weight: "500 g", image: "https://assets.woolworths.com.au/images/1005/134681.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: false),
+        Ingredient(name: "Carrots", expire: -5, weight: "1 kg", image: "https://assets.woolworths.com.au/images/1005/135344.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: false),
+        Ingredient(name: "Tomatoes", expire: -4, weight: "750 g", image: "https://assets.woolworths.com.au/images/1005/134034.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: false),
+        Ingredient(name: "Lettuce", expire: 2, weight: "1 pc", image: "https://assets.woolworths.com.au/images/1005/154340.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: false),
+        Ingredient(name: "Apples", expire: 10, weight: "1 kg", image: "https://assets.woolworths.com.au/images/1005/120044.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: false),
+        Ingredient(name: "Bananas", expire: 5, weight: "1 kg", image: "https://assets.woolworths.com.au/images/1005/133211.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: false),
+        Ingredient(name: "Oranges", expire: 7, weight: "1 kg", image: "https://assets.woolworths.com.au/images/1005/259450.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: false),
+        Ingredient(name: "Beef", expire: 3, weight: "500 g", image: "https://upload.wikimedia.org/wikipedia/commons/6/60/Standing-rib-roast.jpg", isSelected: false, isNew: false),
+        Ingredient(name: "Chicken breast", expire: 2, weight: "1 kg", image: "https://assets.woolworths.com.au/images/1005/710953.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: false),
+        Ingredient(name: "Pork", expire: 4, weight: "1 kg", image: "https://assets.woolworths.com.au/images/1005/675622.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: false),
+        Ingredient(name: "Eggs", expire: 5, weight: "12 pcs", image: "https://www.asiangroceronline.com.au/img/products/small/2346_egg-600g-dozen~7732.jpg?v=31Db7", isSelected: false, isNew: false),
+        Ingredient(name: "Milk", expire: 7, weight: "1 liter", image: "https://cdn0.woolworths.media/content/wowproductimages/large/208064.jpg", isSelected: false, isNew: false),
+        Ingredient(name: "Flour", expire: 365, weight: "2.27 kg", image: "https://assets.woolworths.com.au/images/1005/230949.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: false),
+        Ingredient(name: "Tomato sauce", expire: 365, weight: "2.27 kg", image: "https://assets.woolworths.com.au/images/1005/83563.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: false),
+        Ingredient(name: "Sugar", expire: 365, weight: "907 g", image: "https://assets.woolworths.com.au/images/1005/33156.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: false),
+        Ingredient(name: "Salt", expire: 365, weight: "454 g", image: "https://assets.woolworths.com.au/images/1005/111359.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: false),
+        Ingredient(name: "Pepper", expire: 365, weight: "113 g", image: "https://assets.woolworths.com.au/images/1005/98800.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: false)
     ]
     
     @State private var results:[Ingredient] = []
     private let adaptiveColumns = [
-        GridItem(.adaptive(minimum: 100))
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible())
     ]
     
     @State private var isSelectionView: Bool = false
@@ -95,54 +96,30 @@ struct ViewFoodStorage: View {
     var body: some View {
         VStack {
             NavigationStack {
+                HStack {
+                    Spacer()
+                    Text("Food Storage")
+                        .font(.system(size: 28, weight: .bold))
+                        .foregroundColor(.accentColor)
+                        .multilineTextAlignment(.center)
+                    Spacer()
+                    Button(action: {
+                        
+                    }, label: {
+                        Image(systemName: "magnifyingglass")
+                            .font(.system(size: 25, weight: .bold))
+                    })
+                    Button(action: {
+                        self.showSannerSheet = true
+                    }, label: {
+                        Image(systemName: "plus")
+                            .font(.system(size: 28, weight: .bold))
+                    })
+                }
                 VStack {
-                    HStack{
-                        Spacer()
-                        Button(action: selectionView, label: {
-                            if isSelectionView {
-                                Image(systemName: "checkmark.square.fill")
-                                    .font(.system(size: 25))
-                            } else {
-                                Image(systemName: "checkmark.square")
-                                    .font(.system(size: 25))
-                            }
-                            
-                        })
-                        Menu{
-                            Button(action: { sortIngredients(sort: .expireDate) }) {
-                                Image(systemName: "photo")
-                                Text("Sort by expire date")
-                            }
-                            Button(action: { sortIngredients(sort: .createdAscending) }) {
-                                Image(systemName: "photo")
-                                Text("Sort by added date ascending")
-                            }
-                            Button(action: { sortIngredients(sort: .createdDescending) }) {
-                                Image(systemName: "photo")
-                                Text("Sort by added date descending")
-                            }
-                            Button(action: { sortIngredients(sort: .nameAscending) }) {
-                                Image(systemName: "photo")
-                                Text("Sort by name ascending")
-                            }
-                            Button(action: { sortIngredients(sort: .nameDescending) }) {
-                                Image(systemName: "photo")
-                                Text("Sort by name descending")
-                            }
-                        } label: {
-                            Image("expire")
-                                .resizable()
-                                .frame(width: 25, height: 25)
-                        }
-                        Button(action: switchView, label: {
-                            Image("grid-view-rounded")
-                                .resizable()
-                                .frame(width: 25, height: 25)
-                        })
-                    }
-                    .frame(height: 25, alignment: .trailing)
+                    functionKeys(isSelectionView: $isSelectionView, newIngredients: $newIngredients)
                     ScrollView {
-                        LazyVGrid(columns: adaptiveColumns, spacing: 20) {
+                        LazyVGrid(columns: adaptiveColumns, spacing: 8) {
                             IngredientsGridList(newIngredients: $newIngredients, isSelectionView: isSelectionView)
                         }
                     }
@@ -151,49 +128,6 @@ struct ViewFoodStorage: View {
                         countSelectedIngredients(newIngredients: $newIngredients)
                     }
                 }
-                .navigationBarItems(
-                    leading: HStack {
-                        Spacer()
-                        Text("Food Storage")
-                            .font(.system(size: 28, weight: .bold))
-                            .multilineTextAlignment(.center)
-                        Spacer()
-                    },
-                    trailing: HStack {
-                        Button(action: {
-                            texts = []
-                            results = []
-                            existingIngredients = [
-                                Ingredient(name: "Broccoli", expire: -3, weight: "500 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
-                                Ingredient(name: "Carrots", expire: -5, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
-                                Ingredient(name: "Tomatoes", expire: -4, weight: "750 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
-                                Ingredient(name: "Lettuce", expire: 2, weight: "1 piece", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
-                                Ingredient(name: "Apples", expire: 10, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
-                                Ingredient(name: "Bananas", expire: 5, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
-                                Ingredient(name: "Oranges", expire: 7, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
-                                Ingredient(name: "Beef", expire: 3, weight: "500 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
-                                Ingredient(name: "Chicken breast", expire: 2, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
-                                Ingredient(name: "Pork", expire: 4, weight: "1 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
-                                Ingredient(name: "Eggs", expire: 5, weight: "12 pieces", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
-                                Ingredient(name: "Milk", expire: 7, weight: "1 liter", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
-                                Ingredient(name: "Flour", expire: 365, weight: "2.27 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
-                                Ingredient(name: "Black paper sauce", expire: 365, weight: "2.27 kg", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
-                                Ingredient(name: "Sugar", expire: 365, weight: "907 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
-                                Ingredient(name: "Salt", expire: 365, weight: "454 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false),
-                                Ingredient(name: "Pepper", expire: 365, weight: "113 g", image: "https://healthjade.com/wp-content/uploads/2017/10/apple-fruit.jpg", isSelected: false, isNew: false)
-                            ]
-                            newIngredients = existingIngredients + results
-                        }, label: {
-                            Text("Clear")
-                        })
-                        Button(action: {
-                            self.showSannerSheet = true
-                        }, label: {
-                            Image(systemName: "plus")
-                                .font(.system(size: 28, weight: .bold))
-                        })
-                    }
-                )
                 .sheet(isPresented: $showSannerSheet, content: {
                     makeScannerView()
                 })
@@ -205,27 +139,6 @@ struct ViewFoodStorage: View {
                 newIngredients = existingIngredients + results
             }
         }
-    }
-    private func selectionView() {
-        self.isSelectionView = !self.isSelectionView
-    }
-    private func sortIngredients(sort: Sort) {
-        switch sort {
-        case .expireDate:
-            newIngredients = newIngredients.sorted(by: {$0.expire < $1.expire})
-        case .createdAscending:
-            print("")
-        case .createdDescending:
-            print("")
-        case .nameAscending:
-            newIngredients = newIngredients.sorted(by: {$0.name < $1.name})
-        case .nameDescending:
-            newIngredients = newIngredients.sorted(by: {$0.name > $1.name})
-        }
-        
-    }
-    private func switchView() {
-        
     }
     private func makeScannerView() -> ScannerView {
         ScannerView(completion: {
@@ -256,27 +169,20 @@ struct ViewFoodStorage_Previews: PreviewProvider {
 struct IngredientsGridList: View {
     @Binding var newIngredients: [Ingredient]
     var isSelectionView: Bool;
-    @State var viewWidth: CGFloat = 115;
+    @State var viewWidth: CGFloat = 110;
     
     var body: some View {
         ForEach(newIngredients, id: \.id) { ingredient in
             VStack(spacing:6) {
                 ZStack {
-                    if ingredient.isSelected && isSelectionView {
-                        Rectangle()
-        //                Image(uiImage: "\(existingIngredient.image)".load())
-        //                    .resizable()
-                            .frame(width: viewWidth, height: 120)
-        //                    .border(Color.gray, width: 2)
-                            .opacity(0.3)
-                    } else {
-                        Rectangle()
-        //                Image(uiImage: "\(existingIngredient.image)".load())
-        //                    .resizable()
-                            .frame(width: viewWidth, height: 120)
-        //                    .border(Color.gray, width: 2)
-                            .opacity(0.5)
+                    VStack {
+                        Image(uiImage: "\(ingredient.image)".load())
+                            .resizable()
+                            .frame(width: viewWidth-20, height: 100)
+                            .opacity((ingredient.isSelected && isSelectionView) ? 0.3 : 0.8)
                     }
+                    .frame(width: viewWidth, height: 120)
+                    
                     if ingredient.expire > 0 {
                         Text("\(ingredient.expire) days")
                             .font(.system(size: 20, weight: .bold))
@@ -319,10 +225,12 @@ struct IngredientsGridList: View {
                 }
                 .padding(.horizontal, 5)
             }
+            .background(
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(Color.white)
+                    .shadow(color: .gray, radius: 2, x: 1, y: 2)
+            )
             .frame(width: viewWidth, height: 201, alignment: .top)
-            .border(Color.gray, width: 2)
-            .cornerRadius(5)
-            .contentShape(Rectangle())
             .onTapGesture {
                 if isSelectionView {
                     if let index = newIngredients.firstIndex(where: { $0.id == ingredient.id }) {
@@ -375,5 +283,70 @@ struct countSelectedIngredients: View {
     
     private func deleteIngredients() {
         newIngredients.removeAll(where: {$0.isSelected})
+    }
+}
+
+struct functionKeys: View {
+    @Binding var isSelectionView: Bool
+    @Binding var newIngredients: [Ingredient]
+    var body: some View {
+        HStack{
+            Spacer()
+            Button(action: {
+                isSelectionView = !isSelectionView
+            }, label: {
+                if isSelectionView {
+                    Image(systemName: "checkmark.square.fill").imageScale(.large)
+                } else {
+                    Image(systemName: "checkmark.square").imageScale(.large)
+                }
+                
+            })
+            
+            Menu{
+                Button(action: { sortIngredients(sort: .expireDate) }) {
+                    Image(systemName: "photo")
+                    Text("Sort by expire date")
+                }
+                Button(action: { sortIngredients(sort: .category) }) {
+                    Image(systemName: "photo")
+                    Text("Sort by category")
+                }
+                Button(action: { sortIngredients(sort: .nameAscending) }) {
+                    Image(systemName: "photo")
+                    Text("Sort by name A to Z")
+                }
+                Button(action: { sortIngredients(sort: .nameDescending) }) {
+                    Image(systemName: "photo")
+                    Text("Sort by name Z to A")
+                }
+            } label: {
+                Image(systemName: "clock").imageScale(.large)
+            }
+            .disabled(isSelectionView)
+            
+            Button(action: switchView, label: {
+                Image(systemName: "square.grid.2x2.fill").imageScale(.large)
+            })
+            .disabled(isSelectionView)
+        }
+        .frame(height: 25, alignment: .trailing)
+    }
+    
+    private func sortIngredients(sort: Sort) {
+        switch sort {
+        case .expireDate:
+            newIngredients = newIngredients.sorted(by: {$0.expire < $1.expire})
+        case .category:
+            print("")
+        case .nameAscending:
+            newIngredients = newIngredients.sorted(by: {$0.name < $1.name})
+        case .nameDescending:
+            newIngredients = newIngredients.sorted(by: {$0.name > $1.name})
+        }
+        
+    }
+    private func switchView() {
+        
     }
 }
