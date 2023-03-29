@@ -25,24 +25,6 @@ struct Category: Identifiable {
     let name: String
     var isExpanding: Bool
 }
-extension String {
-    func load() -> UIImage {
-        do {
-            // convert string to URL
-            guard let url = URL(string: self) else {
-                // return empty image if the URL is invalid
-                return UIImage()
-            }
-            //convert URL to data
-            let data: Data = try Data(contentsOf: url)
-            // create UIImage object from Data and optional value if the image in URL does not exists
-            return UIImage(data: data) ?? UIImage()
-        } catch {
-            
-        }
-        return UIImage()
-    }
-}
 
 extension View {
     func backgroundCard(isSelected: Bool) -> some View {
@@ -58,51 +40,50 @@ struct ViewFoodStorage: View {
     @State private var showSannerSheet = false
     @State private var texts:[ScanData] = []
     @State private var categories: [Category] = [
-        Category(name: "vegetable", isExpanding: true),
-        Category(name: "fruit", isExpanding: true),
-        Category(name: "meat", isExpanding: true),
-        Category(name: "dairy", isExpanding: true),
-        Category(name: "pantry", isExpanding: true)
+        Category(name: "Vegetable", isExpanding: true),
+        Category(name: "Fruit", isExpanding: true),
+        Category(name: "Meat", isExpanding: true),
+        Category(name: "Dairy", isExpanding: true),
+        Category(name: "Pantry", isExpanding: true)
     ]
     @State private var ingredientLibrary: [Ingredient] = [
-        Ingredient(name: "Spinach", expire: 3, weight: "250 g", image: "https://assets.woolworths.com.au/images/1005/194947.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: true, category: "vegetable"),
-        Ingredient(name: "Carrot", expire: 7, weight: "500 g", image: "https://assets.woolworths.com.au/images/1005/135344.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: true, category: "vegetable"),
-        Ingredient(name: "Broccoli", expire: 5, weight: "500 g", image: "https://assets.woolworths.com.au/images/1005/134681.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: true, category: "vegetable"),
-        Ingredient(name: "Cauliflower", expire: 5, weight: "500 g", image: "https://assets.woolworths.com.au/images/1005/135552.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: true, category: "vegetable"),
-        Ingredient(name: "Lettuce", expire: 2, weight: "1 pc", image: "https://assets.woolworths.com.au/images/1005/154340.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: true, category: "vegetable"),
-        Ingredient(name: "Cabbage", expire: 7, weight: "1 head", image: "https://assets.woolworths.com.au/images/1005/134923.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: true, category: "vegetable"),
-        Ingredient(name: "Tomato", expire: 4, weight: "1 kg", image: "https://assets.woolworths.com.au/images/1005/134034.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: true, category: "vegetable"),
-        Ingredient(name: "Pepper", expire: 7, weight: "500 g", image: "https://assets.woolworths.com.au/images/1005/98800.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: true, category: "vegetable"),
-        Ingredient(name: "Onion", expire: 14, weight: "1 kg", image: "https://assets.woolworths.com.au/images/1005/144329.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: true, category: "vegetable"),
-        Ingredient(name: "Garlic", expire: 30, weight: "250 g", image: "https://assets.woolworths.com.au/images/1005/713429.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: true, category: "vegetable"),
-        Ingredient(name: "Potato", expire: 30, weight: "2 kg", image: "https://assets.woolworths.com.au/images/1005/246566.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: true, category: "vegetable"),
-        Ingredient(name: "Sweet potato", expire: 14, weight: "1 kg", image: "https://assets.woolworths.com.au/images/1005/147071.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: true, category: "vegetable"),
-        Ingredient(name: "Zucchini", expire: 5, weight: "500 g", image: "https://assets.woolworths.com.au/images/1005/174172.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: true, category: "vegetable"),
-        Ingredient(name: "Eggplant", expire: 7, weight: "500 g", image: "https://assets.woolworths.com.au/images/1005/174095.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: true, category: "vegetable"),
-        Ingredient(name: "Cucumber", expire: 5, weight: "500 g", image: "https://assets.woolworths.com.au/images/1005/137130.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: true, category: "vegetable"),
-        Ingredient(name: "Green beans", expire: 3, weight: "250 g", image: "https://assets.woolworths.com.au/images/1005/134072.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: true, category: "vegetable"),
-        Ingredient(name: "Peas", expire: 15, weight: "500 g", image: "https://assets.woolworths.com.au/images/1005/96206.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: true, category: "vegetable"),
-        Ingredient(name: "Corn", expire: 3, weight: "4 ears", image: "https://cdn0.woolworths.media/content/wowproductimages/large/149374.jpg", isSelected: false, isNew: true, category: "vegetable")
-        
+        Ingredient(name: "Spinach", expire: 3, weight: "250 g", image: "Ingredients/Spinach", isSelected: false, isNew: true, category: "Vegetable"),
+        Ingredient(name: "Carrot", expire: 7, weight: "500 g", image: "Ingredients/Carrot", isSelected: false, isNew: true, category: "Vegetable"),
+        Ingredient(name: "Broccoli", expire: 5, weight: "500 g", image: "Ingredients/Broccoli", isSelected: false, isNew: true, category: "Vegetable"),
+        Ingredient(name: "Cauliflower", expire: 5, weight: "500 g", image: "Ingredients/Cauliflower", isSelected: false, isNew: true, category: "Vegetable"),
+        Ingredient(name: "Lettuce", expire: 2, weight: "1 pc", image: "Ingredients/Lettuce", isSelected: false, isNew: true, category: "Vegetable"),
+        Ingredient(name: "Cabbage", expire: 7, weight: "1 head", image: "Ingredients/Cabbage", isSelected: false, isNew: true, category: "Vegetable"),
+        Ingredient(name: "Tomato", expire: 4, weight: "1 kg", image: "Ingredients/Tomato", isSelected: false, isNew: true, category: "Vegetable"),
+        Ingredient(name: "Pepper", expire: 7, weight: "500 g", image: "Ingredients/Pepper", isSelected: false, isNew: true, category: "Vegetable"),
+        Ingredient(name: "Onion", expire: 14, weight: "1 kg", image: "Ingredients/Onion", isSelected: false, isNew: true, category: "Vegetable"),
+        Ingredient(name: "Garlic", expire: 30, weight: "250 g", image: "Ingredients/Garlic", isSelected: false, isNew: true, category: "Vegetable"),
+        Ingredient(name: "Potato", expire: 30, weight: "2 kg", image: "Ingredients/Potato", isSelected: false, isNew: true, category: "Vegetable"),
+        Ingredient(name: "Sweet potato", expire: 14, weight: "1 kg", image: "Ingredients/SweetPotato", isSelected: false, isNew: true, category: "Vegetable"),
+        Ingredient(name: "Zucchini", expire: 5, weight: "500 g", image: "Ingredients/Zucchini", isSelected: false, isNew: true, category: "Vegetable"),
+        Ingredient(name: "Eggplant", expire: 7, weight: "500 g", image: "Ingredients/Eggplant", isSelected: false, isNew: true, category: "Vegetable"),
+        Ingredient(name: "Cucumber", expire: 5, weight: "500 g", image: "Ingredients/Cucumber", isSelected: false, isNew: true, category: "Vegetable"),
+        Ingredient(name: "Green beans", expire: 3, weight: "250 g", image: "Ingredients/GreenBeans", isSelected: false, isNew: true, category: "Vegetable"),
+        Ingredient(name: "Peas", expire: 15, weight: "500 g", image: "Ingredients/Peas", isSelected: false, isNew: true, category: "Vegetable"),
+        Ingredient(name: "Corn", expire: 3, weight: "4 ears", image: "Ingredients/Corn", isSelected: false, isNew: true, category: "Vegetable")
     ]
     @State private var existingIngredients: [Ingredient] = [
-        Ingredient(name: "Broccoli", expire: -3, weight: "500 g", image: "https://assets.woolworths.com.au/images/1005/134681.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: false, category: "vegetable"),
-        Ingredient(name: "Carrots", expire: -5, weight: "1 kg", image: "https://assets.woolworths.com.au/images/1005/135344.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: false, category: "vegetable"),
-        Ingredient(name: "Tomatoes", expire: -4, weight: "750 g", image: "https://assets.woolworths.com.au/images/1005/134034.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: false, category: "vegetable"),
-        Ingredient(name: "Lettuce", expire: 2, weight: "1 pc", image: "https://assets.woolworths.com.au/images/1005/154340.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: false, category: "vegetable"),
-        Ingredient(name: "Apples", expire: 10, weight: "1 kg", image: "https://assets.woolworths.com.au/images/1005/120044.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: false, category: "fruit"),
-        Ingredient(name: "Bananas", expire: 5, weight: "1 kg", image: "https://assets.woolworths.com.au/images/1005/133211.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: false, category: "fruit"),
-        Ingredient(name: "Oranges", expire: 7, weight: "1 kg", image: "https://assets.woolworths.com.au/images/1005/259450.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: false, category: "fruit"),
-        Ingredient(name: "Beef", expire: 3, weight: "500 g", image: "https://upload.wikimedia.org/wikipedia/commons/6/60/Standing-rib-roast.jpg", isSelected: false, isNew: false, category: "meat"),
-        Ingredient(name: "Chicken breast", expire: 2, weight: "1 kg", image: "https://assets.woolworths.com.au/images/1005/710953.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: false, category: "meat"),
-        Ingredient(name: "Pork", expire: 4, weight: "1 kg", image: "https://assets.woolworths.com.au/images/1005/675622.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: false, category: "meat"),
-        Ingredient(name: "Eggs", expire: 5, weight: "12 pcs", image: "https://www.asiangroceronline.com.au/img/products/small/2346_egg-600g-dozen~7732.jpg?v=31Db7", isSelected: false, isNew: false, category: "dairy"),
-        Ingredient(name: "Milk", expire: 7, weight: "1 liter", image: "https://cdn0.woolworths.media/content/wowproductimages/large/208064.jpg", isSelected: false, isNew: false, category: "dairy"),
-        Ingredient(name: "Flour", expire: 365, weight: "2.27 kg", image: "https://assets.woolworths.com.au/images/1005/230949.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: false, category: "pantry"),
-        Ingredient(name: "Tomato sauce", expire: 365, weight: "2.27 kg", image: "https://assets.woolworths.com.au/images/1005/83563.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: false, category: "pantry"),
-        Ingredient(name: "Sugar", expire: 365, weight: "907 g", image: "https://assets.woolworths.com.au/images/1005/33156.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: false, category: "pantry"),
-        Ingredient(name: "Salt", expire: 365, weight: "454 g", image: "https://assets.woolworths.com.au/images/1005/111359.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: false, category: "pantry"),
-        Ingredient(name: "Pepper", expire: 365, weight: "113 g", image: "https://assets.woolworths.com.au/images/1005/98800.jpg?impolicy=wowsmkqiema&w=260&h=260", isSelected: false, isNew: false, category: "pantry")
+        Ingredient(name: "Broccoli", expire: -3, weight: "500 g", image: "Ingredients/Broccoli", isSelected: false, isNew: false, category: "Vegetable"),
+        Ingredient(name: "Carrot", expire: -5, weight: "1 kg", image: "Ingredients/Carrot", isSelected: false, isNew: false, category: "Vegetable"),
+        Ingredient(name: "Tomato", expire: -4, weight: "750 g", image: "Ingredients/Tomato", isSelected: false, isNew: false, category: "Vegetable"),
+        Ingredient(name: "Lettuce", expire: 2, weight: "1 pc", image: "Ingredients/Lettuce", isSelected: false, isNew: false, category: "Vegetable"),
+        Ingredient(name: "Apples", expire: 10, weight: "1 kg", image: "Ingredients/Apples", isSelected: false, isNew: false, category: "Fruit"),
+        Ingredient(name: "Bananas", expire: 5, weight: "1 kg", image: "Ingredients/Bananas", isSelected: false, isNew: false, category: "Fruit"),
+        Ingredient(name: "Oranges", expire: 7, weight: "1 kg", image: "Ingredients/Oranges", isSelected: false, isNew: false, category: "Fruit"),
+        Ingredient(name: "Beef", expire: 3, weight: "500 g", image: "Ingredients/Beef", isSelected: false, isNew: false, category: "Meat"),
+        Ingredient(name: "Chicken breast", expire: 2, weight: "1 kg", image: "Ingredients/ChickenBreast", isSelected: false, isNew: false, category: "Meat"),
+        Ingredient(name: "Pork", expire: 4, weight: "1 kg", image: "Ingredients/Pork", isSelected: false, isNew: false, category: "Meat"),
+        Ingredient(name: "Egg", expire: 5, weight: "12 pcs", image: "Ingredients/Egg", isSelected: false, isNew: false, category: "Dairy"),
+        Ingredient(name: "Milk", expire: 7, weight: "1 liter", image: "Ingredients/Milk", isSelected: false, isNew: false, category: "Dairy"),
+        Ingredient(name: "Flour", expire: 365, weight: "2.27 kg", image: "Ingredients/Flour", isSelected: false, isNew: false, category: "Pantry"),
+        Ingredient(name: "Tomato sauce", expire: 365, weight: "2.27 kg", image: "Ingredients/TomatoSauce", isSelected: false, isNew: false, category: "Pantry"),
+        Ingredient(name: "Sugar", expire: 365, weight: "907 g", image: "Ingredients/Sugar", isSelected: false, isNew: false, category: "Pantry"),
+        Ingredient(name: "Salt", expire: 365, weight: "454 g", image: "Ingredients/Salt", isSelected: false, isNew: false, category: "Pantry"),
+        Ingredient(name: "Pepper", expire: 365, weight: "113 g", image: "Ingredients/Pepper", isSelected: false, isNew: false, category: "Pantry")
     ]
     
     @State private var results:[Ingredient] = []
@@ -141,6 +122,7 @@ struct ViewFoodStorage: View {
                         Image(systemName: "plus")
                             .font(.system(size: 28, weight: .bold))
                     })
+                    .disabled(isSelectionView)
                 }
                 VStack {
                     functionKeys(
@@ -150,39 +132,45 @@ struct ViewFoodStorage: View {
                         isGridView: $isGridView
                     )
                     ScrollView {
-                        if (isGridView) {
-                            if (isSortByCategory) {
-                                ForEach(categories.indices, id: \.self) { index in
-                                    let category = categories[index]
-                                    Button(action: {
-                                        categories[index].isExpanding.toggle()
-                                    }, label: {
-                                        HStack{
-                                            Text(category.name)
-                                            Spacer()
-                                            categories[index].isExpanding ? Image(systemName: "chevron.down") : Image(systemName: "chevron.forward")
-                                        }
-                                    })
-                                    if category.isExpanding {
+                        if isSortByCategory {
+                            ForEach(categories.indices, id: \.self) { index in
+                                let category = categories[index]
+                                Button(action: {
+                                    categories[index].isExpanding.toggle()
+                                }, label: {
+                                    HStack{
+                                        Text(category.name)
+                                        Spacer()
+                                        categories[index].isExpanding ? Image(systemName: "chevron.down") : Image(systemName: "chevron.forward")
+                                    }
+                                })
+                                if category.isExpanding {
+                                    if isGridView {
                                         LazyVGrid(columns: adaptiveColumns, spacing: 8) {
                                             IngredientsGridView(newIngredients: $newIngredients, isSelectionView: isSelectionView, category: category.name)
                                         }
                                     } else {
-                                        Divider()
+                                        IngredientsListView(newIngredients: $newIngredients, isSelectionView: isSelectionView, category: category.name)
                                     }
-                                }
-                            } else {
-                                LazyVGrid(columns: adaptiveColumns, spacing: 8) {
-                                    IngredientsGridView(newIngredients: $newIngredients, isSelectionView: isSelectionView)
+                                } else {
+                                    Divider()
                                 }
                             }
                         } else {
-                            IngredientsListView(newIngredients: $newIngredients, isSelectionView: isSelectionView)
+                            if isGridView {
+                                LazyVGrid(columns: adaptiveColumns, spacing: 8) {
+                                    IngredientsGridView(newIngredients: $newIngredients, isSelectionView: isSelectionView)
+                                }
+                                .padding(.top, 3)
+                            } else {
+                                IngredientsListView(newIngredients: $newIngredients, isSelectionView: isSelectionView)
+                                    .padding(.top, 3)
+                            }
                         }
                     }
                     if isSelectionView {
                         Divider()
-                        countSelectedIngredients(newIngredients: $newIngredients)
+                        countSelectedIngredients(newIngredients: $newIngredients, isSelectionView: $isSelectionView)
                     }
                 }
                 .sheet(isPresented: $showSannerSheet, content: {
@@ -234,7 +222,7 @@ struct IngredientsGridView: View {
             VStack(spacing:6) {
                 ZStack {
                     VStack {
-                        Image(uiImage: "\(ingredient.image)".load())
+                        Image(ingredient.image)
                             .resizable()
                             .frame(width: viewWidth-20, height: 100)
                             .opacity(isSelectionView ? 0.3 : 0.8)
@@ -261,6 +249,7 @@ struct IngredientsGridView: View {
                     if ingredient.isNew {
                         Text("New*")
                             .frame(width: 50, height: 50)
+                            .foregroundColor(Color.accentColor)
                             .offset(x: viewWidth / 3.5, y: -50)
                     }
                 }
@@ -299,6 +288,7 @@ struct IngredientsGridView: View {
 
 struct countSelectedIngredients: View {
     @Binding var newIngredients: [Ingredient]
+    @Binding var isSelectionView: Bool;
     @State private var isShowingDialog: Bool = false
     
     var body: some View {
@@ -337,6 +327,7 @@ struct countSelectedIngredients: View {
     
     private func deleteIngredients() {
         newIngredients.removeAll(where: {$0.isSelected})
+        isSelectionView = false
     }
 }
 
@@ -420,12 +411,13 @@ struct functionKeys: View {
 struct IngredientsListView: View {
     @Binding var newIngredients: [Ingredient]
     var isSelectionView: Bool;
+    var category: String?
     
     var body: some View {
-        ForEach(newIngredients) { ingredient in
+        ForEach(category != nil ? newIngredients.filter{$0.category == category} : newIngredients, id: \.id) { ingredient in
             HStack {
                 ZStack {
-                    Image(uiImage: "\(ingredient.image)".load())
+                    Image(ingredient.image)
                         .resizable()
                         .frame(width: 50, height: 50)
                         .opacity(isSelectionView ? 0.3 : 0.8)
@@ -438,7 +430,7 @@ struct IngredientsListView: View {
                         }
                     }
                 }
-                .frame(width: 70, height: 50)
+                .frame(width: 70, height: 70)
                 VStack(alignment: .leading) {
                     Text(ingredient.name)
                         .font(.system(size: 18, weight: .medium))
