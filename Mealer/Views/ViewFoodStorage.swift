@@ -44,6 +44,16 @@ extension String {
     }
 }
 
+extension View {
+    func backgroundCard(isSelected: Bool) -> some View {
+        self.background(
+            RoundedRectangle(cornerRadius: 5)
+                .fill(isSelected ? Color.accentColor.opacity(0.6) : Color.white)
+                .shadow(color: .gray, radius: 2, x: 0, y: 0)
+        )
+    }
+}
+
 struct ViewFoodStorage: View {
     @State private var showSannerSheet = false
     @State private var texts:[ScanData] = []
@@ -105,6 +115,7 @@ struct ViewFoodStorage: View {
     @State private var isSelectionView: Bool = false
     @State private var switchListView: Bool = false
     @State private var isSortByCategory: Bool = true
+    @State private var isGridView: Bool = true
     
     @State private var newIngredients:[Ingredient] = []
         
@@ -118,12 +129,12 @@ struct ViewFoodStorage: View {
                         .foregroundColor(.accentColor)
                         .multilineTextAlignment(.center)
                     Spacer()
-                    Button(action: {
-                        
-                    }, label: {
-                        Image(systemName: "magnifyingglass")
-                            .font(.system(size: 25, weight: .bold))
-                    })
+//                    Button(action: {
+//
+//                    }, label: {
+//                        Image(systemName: "magnifyingglass")
+//                            .font(.system(size: 25, weight: .bold))
+//                    })
                     Button(action: {
                         self.showSannerSheet = true
                     }, label: {
@@ -135,33 +146,38 @@ struct ViewFoodStorage: View {
                     functionKeys(
                         isSelectionView: $isSelectionView,
                         newIngredients: $newIngredients,
-                        isSortByCategory: $isSortByCategory
+                        isSortByCategory: $isSortByCategory,
+                        isGridView: $isGridView
                     )
-                    ScrollView{
-                        if (isSortByCategory) {
-                            ForEach(categories.indices, id: \.self) { index in
-                                let category = categories[index]
-                                Button(action: {
-                                    categories[index].isExpanding.toggle()
-                                }, label: {
-                                    HStack{
-                                        Text(category.name)
-                                        Spacer()
-                                        categories[index].isExpanding ? Image(systemName: "chevron.down") : Image(systemName: "chevron.forward")
+                    ScrollView {
+                        if (isGridView) {
+                            if (isSortByCategory) {
+                                ForEach(categories.indices, id: \.self) { index in
+                                    let category = categories[index]
+                                    Button(action: {
+                                        categories[index].isExpanding.toggle()
+                                    }, label: {
+                                        HStack{
+                                            Text(category.name)
+                                            Spacer()
+                                            categories[index].isExpanding ? Image(systemName: "chevron.down") : Image(systemName: "chevron.forward")
+                                        }
+                                    })
+                                    if category.isExpanding {
+                                        LazyVGrid(columns: adaptiveColumns, spacing: 8) {
+                                            IngredientsGridView(newIngredients: $newIngredients, isSelectionView: isSelectionView, category: category.name)
+                                        }
+                                    } else {
+                                        Divider()
                                     }
-                                })
-                                if category.isExpanding {
-                                    LazyVGrid(columns: adaptiveColumns, spacing: 8) {
-                                        IngredientsGridView(newIngredients: $newIngredients, isSelectionView: isSelectionView, category: category.name)
-                                    }
-                                } else {
-                                    Divider()
+                                }
+                            } else {
+                                LazyVGrid(columns: adaptiveColumns, spacing: 8) {
+                                    IngredientsGridView(newIngredients: $newIngredients, isSelectionView: isSelectionView)
                                 }
                             }
                         } else {
-                            LazyVGrid(columns: adaptiveColumns, spacing: 8) {
-                                IngredientsGridView(newIngredients: $newIngredients, isSelectionView: isSelectionView)
-                            }
+                            IngredientsListView(newIngredients: $newIngredients, isSelectionView: isSelectionView)
                         }
                     }
                     if isSelectionView {
@@ -221,7 +237,7 @@ struct IngredientsGridView: View {
                         Image(uiImage: "\(ingredient.image)".load())
                             .resizable()
                             .frame(width: viewWidth-20, height: 100)
-                            .opacity((ingredient.isSelected && isSelectionView) ? 0.3 : 0.8)
+                            .opacity(isSelectionView ? 0.3 : 0.8)
                     }
                     .frame(width: viewWidth, height: 120)
                     
@@ -267,11 +283,6 @@ struct IngredientsGridView: View {
                 }
                 .padding(.horizontal, 5)
             }
-            .background(
-                RoundedRectangle(cornerRadius: 10)
-                    .fill(Color.white)
-                    .shadow(color: .gray, radius: 2, x: 1, y: 2)
-            )
             .frame(width: viewWidth, height: 201, alignment: .top)
             .onTapGesture {
                 if isSelectionView {
@@ -280,6 +291,7 @@ struct IngredientsGridView: View {
                     }
                 }
             }
+            .backgroundCard(isSelected: ingredient.isSelected)
         }
         
     }
@@ -332,6 +344,7 @@ struct functionKeys: View {
     @Binding var isSelectionView: Bool
     @Binding var newIngredients: [Ingredient]
     @Binding var isSortByCategory: Bool
+    @Binding var isGridView: Bool
     var body: some View {
         HStack{
             Spacer()
@@ -339,6 +352,11 @@ struct functionKeys: View {
             // select
             Button(action: {
                 isSelectionView = !isSelectionView
+                if !isSelectionView {
+                    newIngredients.indices.forEach { index in
+                        newIngredients[index].isSelected = false
+                    }
+                }
             }, label: {
                 if isSelectionView {
                     Image(systemName: "checkmark.square.fill").imageScale(.large)
@@ -369,8 +387,9 @@ struct functionKeys: View {
             
             // view
             Button(action: {
+                isGridView = !isGridView
             }, label: {
-                Image(systemName: "square.grid.2x2.fill").imageScale(.large)
+                isGridView ? Image(systemName: "square.grid.2x2.fill").imageScale(.large) : Image(systemName: "square.fill.text.grid.1x2").imageScale(.large)
             })
             .disabled(isSelectionView)
         }
@@ -395,5 +414,60 @@ struct functionKeys: View {
     }
     private func switchView() {
         
+    }
+}
+
+struct IngredientsListView: View {
+    @Binding var newIngredients: [Ingredient]
+    var isSelectionView: Bool;
+    
+    var body: some View {
+        ForEach(newIngredients) { ingredient in
+            HStack {
+                ZStack {
+                    Image(uiImage: "\(ingredient.image)".load())
+                        .resizable()
+                        .frame(width: 50, height: 50)
+                        .opacity(isSelectionView ? 0.3 : 0.8)
+                    
+                    if (isSelectionView) {
+                        if (ingredient.isSelected == true) {
+                            Image(systemName: "checkmark.circle.fill");
+                        } else {
+                            Image(systemName: "circle")
+                        }
+                    }
+                }
+                .frame(width: 70, height: 50)
+                VStack(alignment: .leading) {
+                    Text(ingredient.name)
+                        .font(.system(size: 18, weight: .medium))
+                    Text(ingredient.weight)
+                        .font(.system(size: 14))
+                }
+                Spacer()
+                VStack{
+                    if ingredient.expire > 0 {
+                        Text("\(ingredient.expire) days")
+                            .font(.system(size: 20, weight: .bold))
+                            .padding(.trailing)
+                    } else {
+                        Text("Expired \(abs(ingredient.expire)) days")
+                            .font(.system(size: 20, weight: .bold))
+                            .foregroundColor(Color.red)
+                            .padding(.trailing)
+                    }
+                }
+            }
+            .backgroundCard(isSelected: ingredient.isSelected)
+            .padding(.horizontal, 2)
+            .onTapGesture {
+                if isSelectionView {
+                    if let index = newIngredients.firstIndex(where: { $0.id == ingredient.id }) {
+                        newIngredients[index].isSelected.toggle()
+                    }
+                }
+            }
+        }
     }
 }
