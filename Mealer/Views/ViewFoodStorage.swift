@@ -434,6 +434,7 @@ struct IngredientsListView: View {
                 VStack(alignment: .leading) {
                     Text(ingredient.name)
                         .font(.system(size: 18, weight: .medium))
+                        .foregroundColor(ingredient.isNew ? Color.accentColor : Color.black)
                     Text(ingredient.weight)
                         .font(.system(size: 14))
                 }
