@@ -100,91 +100,89 @@ struct ViewFoodStorage: View {
     @State private var newIngredients:[Ingredient] = []
     
     var body: some View {
-        NavigationView {
-            VStack {
-                ZStack() {
-                    HStack {
-                        Spacer()
-                        Text("Food Storage")
-                            .font(.system(size: 28, weight: .bold))
-                            .foregroundColor(.accentColor)
-                        Spacer()
-                    }
-                    HStack {
-                        Spacer()
-                        Button(action: {
-                            
-                        }, label: {
-                            Image(systemName: "magnifyingglass")
-                                .font(.system(size: 25, weight: .bold))
-                        })
-                        Button(action: {
-                            self.showSannerSheet = true
-                        }, label: {
-                            Image(systemName: "plus")
-                                .font(.system(size: 28, weight: .bold))
-                        })
-                        .disabled(isSelectionView)
-                    }
+        VStack {
+            ZStack() {
+                HStack {
+                    Spacer()
+                    Text("Food Storage")
+                        .font(.system(size: 28, weight: .bold))
+                        .foregroundColor(.accentColor)
+                    Spacer()
                 }
-                VStack {
-                    functionKeys(
-                        isSelectionView: $isSelectionView,
-                        newIngredients: $newIngredients,
-                        isSortByCategory: $isSortByCategory,
-                        isGridView: $isGridView
-                    )
-                    ScrollView {
-                        if isSortByCategory {
-                            ForEach(categories.indices, id: \.self) { index in
-                                let category = categories[index]
-                                Button(action: {
-                                    categories[index].isExpanding.toggle()
-                                }, label: {
-                                    HStack{
-                                        Text(category.name)
-                                        Spacer()
-                                        categories[index].isExpanding ? Image(systemName: "chevron.down") : Image(systemName: "chevron.forward")
-                                    }
-                                })
-                                if category.isExpanding {
-                                    if isGridView {
-                                        LazyVGrid(columns: adaptiveColumns, spacing: 8) {
-                                            IngredientsGridView(newIngredients: $newIngredients, isSelectionView: isSelectionView, category: category.name)
-                                        }
-                                    } else {
-                                        IngredientsListView(newIngredients: $newIngredients, isSelectionView: isSelectionView, category: category.name)
+                HStack {
+                    Spacer()
+                    Button(action: {
+                        
+                    }, label: {
+                        Image(systemName: "magnifyingglass")
+                            .font(.system(size: 25, weight: .bold))
+                    })
+                    Button(action: {
+                        self.showSannerSheet = true
+                    }, label: {
+                        Image(systemName: "plus")
+                            .font(.system(size: 28, weight: .bold))
+                    })
+                    .disabled(isSelectionView)
+                }
+            }
+            VStack {
+                functionKeys(
+                    isSelectionView: $isSelectionView,
+                    newIngredients: $newIngredients,
+                    isSortByCategory: $isSortByCategory,
+                    isGridView: $isGridView
+                )
+                ScrollView {
+                    if isSortByCategory {
+                        ForEach(categories.indices, id: \.self) { index in
+                            let category = categories[index]
+                            Button(action: {
+                                categories[index].isExpanding.toggle()
+                            }, label: {
+                                HStack{
+                                    Text(category.name)
+                                    Spacer()
+                                    categories[index].isExpanding ? Image(systemName: "chevron.down") : Image(systemName: "chevron.forward")
+                                }
+                            })
+                            if category.isExpanding {
+                                if isGridView {
+                                    LazyVGrid(columns: adaptiveColumns, spacing: 8) {
+                                        IngredientsGridView(newIngredients: $newIngredients, isSelectionView: isSelectionView, category: category.name)
                                     }
                                 } else {
-                                    Divider()
+                                    IngredientsListView(newIngredients: $newIngredients, isSelectionView: isSelectionView, category: category.name)
                                 }
-                            }
-                        } else {
-                            if isGridView {
-                                LazyVGrid(columns: adaptiveColumns, spacing: 8) {
-                                    IngredientsGridView(newIngredients: $newIngredients, isSelectionView: isSelectionView)
-                                }
-                                .padding(.top, 3)
                             } else {
-                                IngredientsListView(newIngredients: $newIngredients, isSelectionView: isSelectionView)
-                                    .padding(.top, 3)
+                                Divider()
                             }
                         }
-                    }
-                    if isSelectionView {
-                        Divider()
-                        countSelectedIngredients(newIngredients: $newIngredients, isSelectionView: $isSelectionView)
+                    } else {
+                        if isGridView {
+                            LazyVGrid(columns: adaptiveColumns, spacing: 8) {
+                                IngredientsGridView(newIngredients: $newIngredients, isSelectionView: isSelectionView)
+                            }
+                            .padding(.top, 3)
+                        } else {
+                            IngredientsListView(newIngredients: $newIngredients, isSelectionView: isSelectionView)
+                                .padding(.top, 3)
+                        }
                     }
                 }
-                .sheet(isPresented: $showSannerSheet, content: {
-                    makeScannerView()
-                })
+                if isSelectionView {
+                    Divider()
+                    countSelectedIngredients(newIngredients: $newIngredients, isSelectionView: $isSelectionView)
+                }
             }
-            .padding()
-            .onAppear {
-                if (newIngredients.isEmpty) {
-                    newIngredients = existingIngredients + results
-                }
+            .sheet(isPresented: $showSannerSheet, content: {
+                makeScannerView()
+            })
+        }
+        .padding()
+        .onAppear {
+            if (newIngredients.isEmpty) {
+                newIngredients = existingIngredients + results
             }
         }
     }
@@ -293,9 +291,9 @@ struct IngredientsGridView: View {
             }
             .padding(.horizontal, 5)
         }
-            .frame(width: viewWidth, height: 201, alignment: .top)
-            .foregroundColor(Color.black)
-            .backgroundCard(isSelected: ingredient.isSelected)
+        .frame(width: viewWidth, height: 201, alignment: .top)
+        .foregroundColor(Color.black)
+        .backgroundCard(isSelected: ingredient.isSelected)
     }
 }
 

@@ -10,7 +10,7 @@ import SwiftUI
 struct IngredientDetailView: View {
     var ingredient: Ingredient
     var body: some View {
-        NavigationView {
+        VStack {
             Text("Details for \(ingredient.name)")
                 .navigationTitle(ingredient.name)
         }
