@@ -7,6 +7,14 @@
 
 import SwiftUI
 
+struct Nutrition: Identifiable {
+    let id = UUID()
+    var name: String
+    var protein: Int
+    var carbon: Int
+    var fat: Int
+}
+
 struct ViewHealth: View {
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
