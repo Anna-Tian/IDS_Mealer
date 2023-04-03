@@ -6,15 +6,15 @@
 //
 
 import SwiftUI
-struct Ingredient: Identifiable {
+struct Ingredient: Identifiable, Hashable {
     let id = UUID()
-    let name: String
+    var name: String
     var expire: Int
     var weight: String
-    let image: String
+    var image: String
     var isSelected: Bool
     var isNew: Bool
-    let category: String
+    var category: String
 }
 enum Sort {
     case expireDate, category, nameAscending, nameDescending
@@ -94,35 +94,39 @@ struct ViewFoodStorage: View {
     ]
     
     @State private var isSelectionView: Bool = false
-    @State private var switchListView: Bool = false
     @State private var isSortByCategory: Bool = true
     @State private var isGridView: Bool = true
     
     @State private var newIngredients:[Ingredient] = []
-        
+    
     var body: some View {
         VStack {
             NavigationStack {
-                HStack {
-                    Spacer()
-                    Text("Food Storage")
-                        .font(.system(size: 28, weight: .bold))
-                        .foregroundColor(.accentColor)
-                        .multilineTextAlignment(.center)
-                    Spacer()
-//                    Button(action: {
-//
-//                    }, label: {
-//                        Image(systemName: "magnifyingglass")
-//                            .font(.system(size: 25, weight: .bold))
-//                    })
-                    Button(action: {
-                        self.showSannerSheet = true
-                    }, label: {
-                        Image(systemName: "plus")
+                ZStack() {
+                    HStack {
+                        Spacer()
+                        Text("Food Storage")
                             .font(.system(size: 28, weight: .bold))
-                    })
-                    .disabled(isSelectionView)
+                            .foregroundColor(.accentColor)
+                        .multilineTextAlignment(.center)
+                        Spacer()
+                    }
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            
+                        }, label: {
+                            Image(systemName: "magnifyingglass")
+                                .font(.system(size: 25, weight: .bold))
+                        })
+                        Button(action: {
+                            self.showSannerSheet = true
+                        }, label: {
+                            Image(systemName: "plus")
+                                .font(.system(size: 28, weight: .bold))
+                        })
+                        .disabled(isSelectionView)
+                    }
                 }
                 VStack {
                     functionKeys(
@@ -296,9 +300,9 @@ struct countSelectedIngredients: View {
             let countIngredients = newIngredients.filter{$0.isSelected}.count;
             Spacer()
             Text(countIngredients > 0 ?
-                    countIngredients == 1 ?
-                        "1 Ingredient Selected" : "\(countIngredients) Ingredients Selected"
-                    : "Select Ingredients")
+                 countIngredients == 1 ?
+                 "1 Ingredient Selected" : "\(countIngredients) Ingredients Selected"
+                 : "Select Ingredients")
             Spacer()
             Button{
                 isShowingDialog = true
