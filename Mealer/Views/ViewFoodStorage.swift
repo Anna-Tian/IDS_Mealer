@@ -100,15 +100,14 @@ struct ViewFoodStorage: View {
     @State private var newIngredients:[Ingredient] = []
     
     var body: some View {
-        VStack {
-            NavigationStack {
+        NavigationView {
+            VStack {
                 ZStack() {
                     HStack {
                         Spacer()
                         Text("Food Storage")
                             .font(.system(size: 28, weight: .bold))
                             .foregroundColor(.accentColor)
-                        .multilineTextAlignment(.center)
                         Spacer()
                     }
                     HStack {
@@ -181,11 +180,11 @@ struct ViewFoodStorage: View {
                     makeScannerView()
                 })
             }
-        }
-        .padding()
-        .onAppear {
-            if (newIngredients.isEmpty) {
-                newIngredients = existingIngredients + results
+            .padding()
+            .onAppear {
+                if (newIngredients.isEmpty) {
+                    newIngredients = existingIngredients + results
+                }
             }
         }
     }
@@ -223,70 +222,80 @@ struct IngredientsGridView: View {
     
     var body: some View {
         ForEach(category != nil ? newIngredients.filter{$0.category == category} : newIngredients, id: \.id) { ingredient in
-            VStack(spacing:6) {
-                ZStack {
-                    VStack {
-                        Image(ingredient.image)
-                            .resizable()
-                            .frame(width: viewWidth-20, height: 100)
-                            .opacity(isSelectionView ? 0.3 : 0.8)
-                    }
-                    .frame(width: viewWidth, height: 120)
-                    
-                    if ingredient.expire > 0 {
-                        Text("\(ingredient.expire) days")
-                            .font(.system(size: 20, weight: .bold))
-                            .foregroundStyle(
-                                Color.black.shadow(
-                                    .drop(color: .white, radius: 1, x: 1, y: 1)
-                                )
-                            )
-                    } else {
-                        Text("Expired \(abs(ingredient.expire)) days")
-                            .font(.system(size: 20, weight: .bold))
-                            .foregroundStyle(
-                                Color.red.shadow(
-                                    .drop(color: .white, radius: 1, x: 1, y: 1)
-                                )
-                            )
-                    }
-                    if ingredient.isNew {
-                        Text("New*")
-                            .frame(width: 50, height: 50)
-                            .foregroundColor(Color.accentColor)
-                            .offset(x: viewWidth / 3.5, y: -50)
-                    }
+            if !isSelectionView {
+                NavigationLink(destination: IngredientDetailView(ingredient: ingredient)) {
+                    ingredientView(for: ingredient)
                 }
-                Text("\(ingredient.name)")
-                    .font(.system(size: 16, weight: .medium))
-                    .frame(width: viewWidth, height: 40, alignment: .top)
-                    .multilineTextAlignment(.center)
-                    .lineLimit(2)
-                HStack {
-                    Text("\(ingredient.weight)")
-                        .frame(height: 20, alignment: .top)
-                    Spacer()
-                    if (isSelectionView) {
-                        if (ingredient.isSelected == true) {
-                            Image(systemName: "checkmark.circle.fill");
-                        } else {
-                            Image(systemName: "circle")
+            } else {
+                ingredientView(for: ingredient)
+                    .onTapGesture {
+                        if isSelectionView {
+                            if let index = newIngredients.firstIndex(where: { $0.id == ingredient.id }) {
+                                newIngredients[index].isSelected.toggle()
+                            }
                         }
                     }
-                }
-                .padding(.horizontal, 5)
             }
-            .frame(width: viewWidth, height: 201, alignment: .top)
-            .onTapGesture {
-                if isSelectionView {
-                    if let index = newIngredients.firstIndex(where: { $0.id == ingredient.id }) {
-                        newIngredients[index].isSelected.toggle()
+        }
+    }
+    
+    func ingredientView(for ingredient: Ingredient) -> some View {
+        VStack(spacing:6) {
+            ZStack {
+                VStack {
+                    Image(ingredient.image)
+                        .resizable()
+                        .frame(width: viewWidth-20, height: 100)
+                        .opacity(isSelectionView ? 0.3 : 0.8)
+                }
+                .frame(width: viewWidth, height: 120)
+                
+                if ingredient.expire > 0 {
+                    Text("\(ingredient.expire) days")
+                        .font(.system(size: 20, weight: .bold))
+                        .foregroundStyle(
+                            Color.black.shadow(
+                                .drop(color: .white, radius: 1, x: 1, y: 1)
+                            )
+                        )
+                } else {
+                    Text("Expired \(abs(ingredient.expire)) days")
+                        .font(.system(size: 20, weight: .bold))
+                        .foregroundStyle(
+                            Color.red.shadow(
+                                .drop(color: .white, radius: 1, x: 1, y: 1)
+                            )
+                        )
+                }
+                if ingredient.isNew {
+                    Text("New*")
+                        .frame(width: 50, height: 50)
+                        .foregroundColor(Color.accentColor)
+                        .offset(x: viewWidth / 3.5, y: -50)
+                }
+            }
+            Text("\(ingredient.name)")
+                .font(.system(size: 16, weight: .medium))
+                .frame(width: viewWidth, height: 40, alignment: .top)
+                .multilineTextAlignment(.center)
+                .lineLimit(2)
+            HStack {
+                Text("\(ingredient.weight)")
+                    .frame(height: 20, alignment: .top)
+                Spacer()
+                if (isSelectionView) {
+                    if (ingredient.isSelected == true) {
+                        Image(systemName: "checkmark.circle.fill");
+                    } else {
+                        Image(systemName: "circle")
                     }
                 }
             }
-            .backgroundCard(isSelected: ingredient.isSelected)
+            .padding(.horizontal, 5)
         }
-        
+            .frame(width: viewWidth, height: 201, alignment: .top)
+            .foregroundColor(Color.black)
+            .backgroundCard(isSelected: ingredient.isSelected)
     }
 }
 

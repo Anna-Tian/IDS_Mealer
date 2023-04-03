@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		950E252929DAD59C00FA1289 /* IngredientDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 950E252829DAD59C00FA1289 /* IngredientDetailView.swift */; };
 		956C9E1029D1BAE200DE1FA0 /* ViewRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956C9E0F29D1BAE200DE1FA0 /* ViewRecipe.swift */; };
 		956C9E1229D1BAF100DE1FA0 /* ViewFoodStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956C9E1129D1BAF100DE1FA0 /* ViewFoodStorage.swift */; };
 		956C9E1429D1BAFA00DE1FA0 /* ViewHealth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956C9E1329D1BAFA00DE1FA0 /* ViewHealth.swift */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		950E252829DAD59C00FA1289 /* IngredientDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientDetailView.swift; sourceTree = "<group>"; };
 		956C9E0F29D1BAE200DE1FA0 /* ViewRecipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRecipe.swift; sourceTree = "<group>"; };
 		956C9E1129D1BAF100DE1FA0 /* ViewFoodStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewFoodStorage.swift; sourceTree = "<group>"; };
 		956C9E1329D1BAFA00DE1FA0 /* ViewHealth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewHealth.swift; sourceTree = "<group>"; };
@@ -53,6 +55,7 @@
 				956C9E1129D1BAF100DE1FA0 /* ViewFoodStorage.swift */,
 				956C9E1329D1BAFA00DE1FA0 /* ViewHealth.swift */,
 				956C9E1729D1BB1100DE1FA0 /* ViewProfile.swift */,
+				950E252829DAD59C00FA1289 /* IngredientDetailView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -174,6 +177,7 @@
 				956C9E1829D1BB1100DE1FA0 /* ViewProfile.swift in Sources */,
 				95B98BF629C88D2C00EF4E73 /* MealerApp.swift in Sources */,
 				956C9E1029D1BAE200DE1FA0 /* ViewRecipe.swift in Sources */,
+				950E252929DAD59C00FA1289 /* IngredientDetailView.swift in Sources */,
 				95B98C0829C88DA100EF4E73 /* ScanData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
