@@ -28,16 +28,6 @@ struct Category: Identifiable {
     var isExpanding: Bool
 }
 
-extension View {
-    func backgroundCard(isSelected: Bool) -> some View {
-        self.background(
-            RoundedRectangle(cornerRadius: 5)
-                .fill(isSelected ? Color.accentColor.opacity(0.6) : Color.white)
-                .shadow(color: .gray, radius: 2, x: 0, y: 0)
-        )
-    }
-}
-
 struct ViewFoodStorage: View {
     @State private var showSannerSheet = false
     @State private var texts:[ScanData] = []
@@ -80,7 +70,7 @@ struct ViewFoodStorage: View {
         Ingredient(name: "Chicken breast", expire: 2, weight: "1 kg", image: "Ingredients/ChickenBreast", isSelected: false, isNew: false, category: "Meat", nutrition: Nutrition(name: "Chicken breast", protein: 31, carbon: 0, fat: 3), createdDate: DateComponents(calendar: Calendar.current, year: 2023, month: 4, day: 3).date!),
         Ingredient(name: "Pork", expire: 4, weight: "1 kg", image: "Ingredients/Pork", isSelected: false, isNew: false, category: "Meat", nutrition: Nutrition(name: "Pork", protein: 27, carbon: 0, fat: 14), createdDate: DateComponents(calendar: Calendar.current, year: 2023, month: 4, day: 3).date!),
         Ingredient(name: "Egg", expire: 5, weight: "12 pcs", image: "Ingredients/Egg", isSelected: false, isNew: false, category: "Dairy", nutrition: Nutrition(name: "Egg", protein: 13, carbon: 1, fat: 11), createdDate: DateComponents(calendar: Calendar.current, year: 2023, month: 4, day: 3).date!),
-        Ingredient(name: "Milk", expire: 7, weight: "1 liter", image: "Ingredients/Milk", isSelected: false, isNew: false, category: "Dairy", nutrition: Nutrition(name: "Milk", protein: 3, carbon: 5, fat: 4), createdDate: DateComponents(calendar: Calendar.current, year: 2023, month: 4, day: 3).date!),
+        Ingredient(name: "Milk", expire: 7, weight: "1 L", image: "Ingredients/Milk", isSelected: false, isNew: false, category: "Dairy", nutrition: Nutrition(name: "Milk", protein: 3, carbon: 5, fat: 4), createdDate: DateComponents(calendar: Calendar.current, year: 2023, month: 4, day: 3).date!),
         Ingredient(name: "Flour", expire: 365, weight: "2.27 kg", image: "Ingredients/Flour", isSelected: false, isNew: false, category: "Pantry", nutrition: Nutrition(name: "Flour", protein: 10, carbon: 76, fat: 1), createdDate: DateComponents(calendar: Calendar.current, year: 2023, month: 4, day: 3).date!),
         Ingredient(name: "Tomato sauce", expire: 365, weight: "2.27 kg", image: "Ingredients/TomatoSauce", isSelected: false, isNew: false, category: "Pantry", nutrition: Nutrition(name: "Tomato sauce", protein: 1, carbon: 10, fat: 0), createdDate: DateComponents(calendar: Calendar.current, year: 2023, month: 4, day: 3).date!),
         Ingredient(name: "Sugar", expire: 365, weight: "907 g", image: "Ingredients/Sugar", isSelected: false, isNew: false, category: "Pantry", nutrition: Nutrition(name: "Sugar", protein: 0, carbon: 100, fat: 0), createdDate: DateComponents(calendar: Calendar.current, year: 2023, month: 4, day: 3).date!),
@@ -222,8 +212,9 @@ struct IngredientsGridView: View {
     
     var body: some View {
         ForEach(category != nil ? newIngredients.filter{$0.category == category} : newIngredients, id: \.id) { ingredient in
+            let index = newIngredients.firstIndex(where: {$0.id == ingredient.id})!
             if !isSelectionView {
-                NavigationLink(destination: IngredientDetailView(ingredient: ingredient)) {
+                NavigationLink(destination: IngredientDetailView(ingredient: $newIngredients[index])) {
                     ingredientView(for: ingredient)
                 }
             } else {

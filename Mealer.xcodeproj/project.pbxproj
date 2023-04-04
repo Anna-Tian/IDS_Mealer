@@ -19,6 +19,7 @@
 		95B98C0429C88D8E00EF4E73 /* ScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B98C0329C88D8E00EF4E73 /* ScannerView.swift */; };
 		95B98C0629C88D9B00EF4E73 /* TextRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B98C0529C88D9B00EF4E73 /* TextRecognizer.swift */; };
 		95B98C0829C88DA100EF4E73 /* ScanData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B98C0729C88DA100EF4E73 /* ScanData.swift */; };
+		95E2C90029DC41930017F6EB /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E2C8FF29DC41930017F6EB /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +36,7 @@
 		95B98C0329C88D8E00EF4E73 /* ScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerView.swift; sourceTree = "<group>"; };
 		95B98C0529C88D9B00EF4E73 /* TextRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextRecognizer.swift; sourceTree = "<group>"; };
 		95B98C0729C88DA100EF4E73 /* ScanData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanData.swift; sourceTree = "<group>"; };
+		95E2C8FF29DC41930017F6EB /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +81,7 @@
 		95B98BF429C88D2C00EF4E73 /* Mealer */ = {
 			isa = PBXGroup;
 			children = (
+				95E2C8FE29DC41850017F6EB /* Helpers */,
 				956C9E0E29D1BAC800DE1FA0 /* Views */,
 				95B98BF529C88D2C00EF4E73 /* MealerApp.swift */,
 				95B98BF729C88D2C00EF4E73 /* ContentView.swift */,
@@ -97,6 +100,14 @@
 				95B98BFC29C88D2D00EF4E73 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		95E2C8FE29DC41850017F6EB /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				95E2C8FF29DC41930017F6EB /* Extensions.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -178,6 +189,7 @@
 				95B98BF629C88D2C00EF4E73 /* MealerApp.swift in Sources */,
 				956C9E1029D1BAE200DE1FA0 /* ViewRecipe.swift in Sources */,
 				950E252929DAD59C00FA1289 /* IngredientDetailView.swift in Sources */,
+				95E2C90029DC41930017F6EB /* Extensions.swift in Sources */,
 				95B98C0829C88DA100EF4E73 /* ScanData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
