@@ -12,7 +12,7 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             TabView {
-                ViewRecipe()
+                ViewRecipeList()
                     .tabItem() {
                         Image(systemName: "text.book.closed.fill")
                         Text("Recipe")
