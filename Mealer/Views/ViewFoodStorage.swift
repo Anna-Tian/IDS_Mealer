@@ -6,27 +6,6 @@
 //
 
 import SwiftUI
-struct Ingredient: Identifiable {
-    let id = UUID()
-    var name: String
-    var expire: Int
-    var weight: String
-    var image: String
-    var isSelected: Bool
-    var isNew: Bool
-    var category: String
-    var nutrition: Nutrition
-    var createdDate: Date
-}
-enum Sort {
-    case expireDate, category, nameAscending, nameDescending
-}
-
-struct Category: Identifiable {
-    let id = UUID()
-    let name: String
-    var isExpanding: Bool
-}
 
 struct ViewFoodStorage: View {
     @State private var showSannerSheet = false
