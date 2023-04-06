@@ -10,13 +10,20 @@ import SwiftUI
 struct RecipeDetailView: View {
     @StateObject private var recipeManager = RecipeManager()
     var body: some View {
-        VStack {
-            if let name = recipeManager.currentRecipe?.name {
-                Text(name)
+        NavigationView() {
+            VStack() {
+                
+                AsyncImageView(urlString: $recipeManager.currentImageURLString)
+                    .cornerRadius(40)
+                if let name = recipeManager.currentRecipe?.name {
+                    Text(name)
+                }
+                Spacer()
             }
-        }
-        .onAppear {
-            recipeManager.detailRecipeRequest(recipeId: "52772")
+            .edgesIgnoringSafeArea(.vertical)
+            .onAppear {
+                recipeManager.detailRecipeRequest(recipeId: "52913")
+            }
         }
     }
 }

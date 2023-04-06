@@ -8,8 +8,19 @@
 import SwiftUI
 
 struct ViewRecipeList: View {
+    @StateObject private var recipeManager = RecipeManager()
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Text("Recipe List")
+            NavigationLink(destination: RecipeDetailView(), label: {
+                if let name = recipeManager.currentRecipe?.name {
+                    Text(name)
+                }
+            })
+        }
+        .onAppear {
+            recipeManager.detailRecipeRequest(recipeId: "52913")
+        }
     }
 }
 

@@ -22,6 +22,7 @@ struct mealNetwork {
 
 final class RecipeManager: ObservableObject {
     @Published var currentRecipe: Recipe?
+    @Published var currentImageURLString: String?
     private var cancellable: AnyCancellable?
     
     func detailRecipeRequest(recipeId: String) {
@@ -31,6 +32,7 @@ final class RecipeManager: ObservableObject {
             .sink { _ in } receiveValue: { data, _ in
                 if let recipeData = try? JSONDecoder().decode(RecipeData.self, from: data) {
                     self.currentRecipe = recipeData.meals.first
+                    self.currentImageURLString = recipeData.meals.first?.imageUrlString
                 }
             }
     }
