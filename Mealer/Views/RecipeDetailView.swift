@@ -9,7 +9,7 @@ import SwiftUI
 
 struct RecipeDetailView: View {
     @StateObject private var recipeManager = RecipeManager()
-    @State var tabIndex = 0
+    @State var tabIndex = 1
     var body: some View {
         NavigationView() {
             VStack() {
@@ -52,10 +52,34 @@ struct RecipeDetailView: View {
                         CustomTabBar(tabIndex: $tabIndex)
                         switch tabIndex {
                         case 1:
-                            InstructionsView()
+                            // Instructions View
+                            ScrollView {
+                                VStack {
+                                    if let instructions = recipeManager.currentRecipe?.instructions {
+                                        let instructionsArray = instructions.components(separatedBy: ". ")
+                                        ForEach(0..<instructionsArray.count, id: \.self) { index in
+                                            HStack(alignment: .top) {
+                                                Text("\(index + 1) ")
+                                                    .font(.title2)
+                                                HStack {
+                                                    Text(instructionsArray[index])
+                                                    Spacer()
+                                                }
+                                            }
+                                        }
+                                        .padding(.horizontal)
+                                        .padding(.vertical, 10)
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 15)
+                                                .fill(Color.gray.opacity(0.2))
+                                        )
+                                    }
+                                }
+                            }
                         case 2:
                             NutritionView()
                         default:
+                            // Ingredients View
                             ScrollView {
                                 VStack(spacing: 15) {
                                     if let ingredients = recipeManager.currentRecipe?.ingredients {
@@ -90,6 +114,7 @@ struct RecipeDetailView: View {
             .edgesIgnoringSafeArea(.vertical)
             .onAppear {
                 recipeManager.detailRecipeRequest(recipeId: "52913")
+//                recipeManager.detailRecipeRequest(recipeId: "52862")
             }
         }
     }
@@ -135,16 +160,6 @@ struct TabBarButton: View {
                 RoundedRectangle(cornerRadius: 15)
                     .fill(Color.gray.opacity(0.2))
             )
-    }
-}
-
-struct InstructionsView: View{
-    var body: some View{
-        ZStack{
-            Rectangle()
-                .foregroundColor(.orange)
-            Text("InstructionsView")
-        }
     }
 }
 
