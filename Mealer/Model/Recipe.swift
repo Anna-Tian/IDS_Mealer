@@ -11,7 +11,7 @@ struct RecipeData: Decodable {
     let meals: [Recipe]
 }
 
-struct Recipe: Decodable {
+struct Recipe: Decodable, Hashable {
     let id: String
     let name: String
     let imageUrlString: String

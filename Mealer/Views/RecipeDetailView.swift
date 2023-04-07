@@ -8,26 +8,22 @@
 import SwiftUI
 
 struct RecipeDetailView: View {
-    @StateObject private var recipeManager = RecipeManager()
-    @State var tabIndex = 1
+    let recipe: Recipe
+    @State var tabIndex = 0
     var body: some View {
         NavigationView() {
             VStack() {
-                if let recipeImage = recipeManager.currentImageURLString {
+                if let recipeImage = recipe.imageUrlString {
                     AsyncImageView(urlString: recipeImage)
                         .cornerRadius(40)
                 }
                 VStack(alignment: .leading, spacing: 15) {
-                    if let name = recipeManager.currentRecipe?.name {
-                        Text(name)
-                            .font(.title2)
-                    }
+                    Text(recipe.name)
+                        .font(.title2)
                     HStack {
                         HStack {
                             Image(systemName: "timer")
-                            if let duration = recipeManager.currentRecipe?.duration {
-                                Text("\(duration)")
-                            }
+                            Text("\(recipe.duration)")
                         }
                         Spacer()
                         HStack(spacing: -15) {
@@ -48,15 +44,15 @@ struct RecipeDetailView: View {
                             Text("Cookware")
                         }
                     }
-                    VStack(spacing: 15) {
-                        CustomTabBar(tabIndex: $tabIndex)
-                        switch tabIndex {
-                        case 1:
-                            // Instructions View
-                            ScrollView {
-                                VStack {
-                                    if let instructions = recipeManager.currentRecipe?.instructions {
-                                        let instructionsArray = instructions.components(separatedBy: ". ")
+                    ZStack(alignment: .bottom) {
+                        VStack(spacing: 15) {
+                            CustomTabBar(tabIndex: $tabIndex)
+                            switch tabIndex {
+                            case 1:
+                                // Instructions View
+                                ScrollView {
+                                    VStack {
+                                        let instructionsArray = recipe.instructions.components(separatedBy: ". ")
                                         ForEach(0..<instructionsArray.count, id: \.self) { index in
                                             HStack(alignment: .top) {
                                                 Text("\(index + 1) ")
@@ -75,15 +71,13 @@ struct RecipeDetailView: View {
                                         )
                                     }
                                 }
-                            }
-                        case 2:
-                            NutritionView()
-                        default:
-                            // Ingredients View
-                            ScrollView {
-                                VStack(spacing: 15) {
-                                    if let ingredients = recipeManager.currentRecipe?.ingredients {
-                                        ForEach(ingredients, id:\.self) { ingredient in
+                            case 2:
+                                NutritionView()
+                            default:
+                                // Ingredients View
+                                ScrollView {
+                                    VStack(spacing: 15) {
+                                        ForEach(recipe.ingredients, id:\.self) { ingredient in
                                             HStack {
                                                 HStack {
                                                     if let imageURL = ingredient.image {
@@ -106,23 +100,43 @@ struct RecipeDetailView: View {
                                 }
                             }
                         }
+                        Button(action: {
+                            
+                        }, label: {
+                            HStack {
+                                Spacer()
+                                Text("Cooking")
+                                    .foregroundColor(Color.white)
+                                Spacer()
+                            }
+                            .padding(.vertical)
+                            .background(
+                                RoundedRectangle(cornerRadius: 40)
+                                    .fill(Color.accentColor)
+                            )
+                        })
                     }
                 }
                 .padding(.horizontal)
                 Spacer()
             }
             .edgesIgnoringSafeArea(.vertical)
-            .onAppear {
-                recipeManager.detailRecipeRequest(recipeId: "52913")
-//                recipeManager.detailRecipeRequest(recipeId: "52862")
-            }
+//            .onAppear {
+//                recipeManager.detailRecipeRequest(recipeId: "52913")
+////                recipeManager.detailRecipeRequest(recipeId: "52862")
+//            }
         }
     }
 }
 
 struct RecipeDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        RecipeDetailView()
+        let sampleIngredient1 = RecipeIngredient(name: "Roasted Vegetables", measure: "400g", image: ingredientNetwork.ingredientImagePath + "Roasted Vegetables".replacingOccurrences(of: " ", with: "%20") + ".png")
+        let sampleIngredient2 = RecipeIngredient(name: "Kidney Beans", measure: "1 can", image: ingredientNetwork.ingredientImagePath + "Kidney Beans".replacingOccurrences(of: " ", with: "%20") + ".png")
+        let sampleIngredient3 = RecipeIngredient(name: "Chopped Tomatoes", measure: "1 can", image: ingredientNetwork.ingredientImagePath + "Chopped Tomatoes".replacingOccurrences(of: " ", with: "%20") + ".png")
+        let sampleIngredient4 = RecipeIngredient(name: "Mixed Grain", measure: "1 Packet", image: ingredientNetwork.ingredientImagePath + "Mixed Grain".replacingOccurrences(of: " ", with: "%20") + ".png")
+        let sample = Recipe(id: "52867", name: "Vegetarian Chilli", imageUrlString: "https://www.themealdb.com/images/media/meals/wqurxy1511453156.jpg", ingredients: [sampleIngredient1, sampleIngredient2, sampleIngredient3, sampleIngredient4], instructions: "Heat oven to 200C/180C fan/ gas 6. Cook the vegetables in a casserole dish for 15 mins. Tip in the beans and tomatoes, season, and cook for another 10-15 mins until piping hot. Heat the pouch in the microwave on High for 1 min and serve with the chilli.", duration: "2h 25m")
+        RecipeDetailView(recipe: sample)
     }
 }
 

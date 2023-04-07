@@ -22,6 +22,7 @@ struct recipeNetwork {
 final class RecipeManager: ObservableObject {
     @Published var currentRecipe: Recipe?
     @Published var currentImageURLString: String?
+    @Published var recipes: [Recipe]?
     private var cancellable: AnyCancellable?
     
     func detailRecipeRequest(recipeId: String) {
@@ -32,6 +33,17 @@ final class RecipeManager: ObservableObject {
                 if let recipeData = try? JSONDecoder().decode(RecipeData.self, from: data) {
                     self.currentRecipe = recipeData.meals.first
                     self.currentImageURLString = recipeData.meals.first?.imageUrlString
+                }
+            }
+    }
+    
+    func randomRecipeRequest() {
+        let url = recipeNetwork.randomRecipePath + recipeNetwork.apiKey + recipeNetwork.randomRecipeSecondPath
+        cancellable = URLSession.shared.dataTaskPublisher(for: URL(string: url)!)
+            .receive(on: DispatchQueue.main)
+            .sink { _ in } receiveValue: { data, _ in
+                if let recipeData = try? JSONDecoder().decode(RecipeData.self, from: data) {
+                    self.recipes = recipeData.meals
                 }
             }
     }
