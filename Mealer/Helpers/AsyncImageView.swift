@@ -10,10 +10,10 @@ import Combine
 
 struct AsyncImageView: View {
     @StateObject private var imageLoader = ImageLoader()
-    @Binding var urlString: String?
+    let urlString: String?
     
-    init(urlString: Binding<String?>) {
-        self._urlString = urlString
+    init(urlString: String?) {
+        self.urlString = urlString
     }
     
     
@@ -28,13 +28,14 @@ struct AsyncImageView: View {
             }
         }
     }
+    
     var body: some View {
-        image.onChange(of: urlString, perform: { value in
+        image.onAppear {
             if let urlString = urlString, let url = URL(string: urlString) {
                 imageLoader.url = url
                 imageLoader.load()
             }
-        })
+        }
     }
 }
 

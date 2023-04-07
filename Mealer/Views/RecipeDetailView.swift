@@ -13,9 +13,11 @@ struct RecipeDetailView: View {
     var body: some View {
         NavigationView() {
             VStack() {
-                AsyncImageView(urlString: $recipeManager.currentImageURLString)
-                    .cornerRadius(40)
-                VStack(alignment: .leading) {
+                if let recipeImage = recipeManager.currentImageURLString {
+                    AsyncImageView(urlString: recipeImage)
+                        .cornerRadius(40)
+                }
+                VStack(alignment: .leading, spacing: 15) {
                     if let name = recipeManager.currentRecipe?.name {
                         Text(name)
                             .font(.title2)
@@ -46,7 +48,7 @@ struct RecipeDetailView: View {
                             Text("Cookware")
                         }
                     }
-                    VStack {
+                    VStack(spacing: 15) {
                         CustomTabBar(tabIndex: $tabIndex)
                         switch tabIndex {
                         case 1:
@@ -54,7 +56,31 @@ struct RecipeDetailView: View {
                         case 2:
                             NutritionView()
                         default:
-                            IngredientsView()
+                            ScrollView {
+                                VStack(spacing: 15) {
+                                    if let ingredients = recipeManager.currentRecipe?.ingredients {
+                                        ForEach(ingredients, id:\.self) { ingredient in
+                                            HStack {
+                                                HStack {
+                                                    if let imageURL = ingredient.image {
+                                                        AsyncImageView(urlString: imageURL)
+                                                            .frame(width: 50, height: 50)
+                                                    }
+                                                    Text(ingredient.name)
+                                                }
+                                                Spacer()
+                                                Text(ingredient.measure)
+                                            }
+                                        }
+                                        .padding(.horizontal)
+                                        .padding(.vertical, 10)
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 15)
+                                                .fill(Color.gray.opacity(0.2))
+                                        )
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -78,7 +104,7 @@ struct RecipeDetailView_Previews: PreviewProvider {
 struct CustomTabBar: View {
     @Binding var tabIndex: Int
     var body: some View {
-        HStack(spacing: 20) {
+        HStack {
             TabBarButton(text: "Ingredients", isSelected: .constant(tabIndex == 0))
                 .onTapGesture { onButtonTapped(index: 0) }
             TabBarButton(text: "Instructions", isSelected: .constant(tabIndex == 1))
@@ -99,18 +125,16 @@ struct TabBarButton: View {
     var body: some View {
         Text(text)
             .fontWeight(isSelected ? .heavy : .regular)
-            .padding(.bottom,10)
-            .border(Color.red)
-    }
-}
-
-struct IngredientsView: View{
-    var body: some View{
-        ZStack{
-            Rectangle()
-                .foregroundColor(.blue)
-            Text("IngredientsView")
-        }
+            .foregroundColor(isSelected ? .white : .black)
+            .padding(.vertical, 5)
+            .padding(.horizontal, 10)
+            .background(
+                isSelected ?
+                RoundedRectangle(cornerRadius: 15)
+                    .fill(Color.accentColor) :
+                RoundedRectangle(cornerRadius: 15)
+                    .fill(Color.gray.opacity(0.2))
+            )
     }
 }
 

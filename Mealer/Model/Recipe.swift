@@ -36,7 +36,10 @@ extension Recipe {
               let measure = recipeDictionary["strMeasure\(index)"] as? String,
               !ingredient.isEmpty,
               !measure.isEmpty {
-            ingredients.append(.init(name: ingredient, measure: measure))
+            
+            let imageName = ingredient.replacingOccurrences(of: " ", with: "%20") + ".png"
+            
+            ingredients.append(.init(name: ingredient, measure: measure, image: ingredientNetwork.ingredientImagePath + imageName))
             index += 1
         }
         id = recipeDictionary["idMeal"] as? String ?? ""
@@ -48,7 +51,8 @@ extension Recipe {
     }
 }
 
-struct RecipeIngredient: Decodable {
+struct RecipeIngredient: Decodable, Hashable {
     let name: String
     let measure: String
+    let image: String
 }

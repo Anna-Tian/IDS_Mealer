@@ -43,3 +43,22 @@ extension View {
             }
     }
 }
+
+extension String {
+    func load() -> UIImage {
+        do {
+            // convert string to URL
+            guard let url = URL(string: self) else {
+                // return empty image if the URL is invalid
+                return UIImage()
+            }
+            //convert URL to data
+            let data: Data = try Data(contentsOf: url)
+            // create UIImage object from Data and optional value if the image in URL does not exists
+            return UIImage(data: data) ?? UIImage()
+        } catch {
+            
+        }
+        return UIImage()
+    }
+}
