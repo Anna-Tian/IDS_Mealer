@@ -72,7 +72,13 @@ struct RecipeDetailView: View {
                                     }
                                 }
                             case 2:
-                                NutritionView()
+                                // Nutrition View
+                                VStack {
+                                    Text("Protein: \(recipe.nutrition.protein)g")
+                                    Text("Carbon: \(recipe.nutrition.carbon)g")
+                                    Text("Fat: \(recipe.nutrition.fat)g")
+                                    Spacer()
+                                }
                             default:
                                 // Ingredients View
                                 ScrollView {
@@ -135,7 +141,7 @@ struct RecipeDetailView_Previews: PreviewProvider {
         let sampleIngredient2 = RecipeIngredient(name: "Kidney Beans", measure: "1 can", image: ingredientNetwork.ingredientImagePath + "Kidney Beans".replacingOccurrences(of: " ", with: "%20") + ".png")
         let sampleIngredient3 = RecipeIngredient(name: "Chopped Tomatoes", measure: "1 can", image: ingredientNetwork.ingredientImagePath + "Chopped Tomatoes".replacingOccurrences(of: " ", with: "%20") + ".png")
         let sampleIngredient4 = RecipeIngredient(name: "Mixed Grain", measure: "1 Packet", image: ingredientNetwork.ingredientImagePath + "Mixed Grain".replacingOccurrences(of: " ", with: "%20") + ".png")
-        let sample = Recipe(id: "52867", name: "Vegetarian Chilli", imageUrlString: "https://www.themealdb.com/images/media/meals/wqurxy1511453156.jpg", ingredients: [sampleIngredient1, sampleIngredient2, sampleIngredient3, sampleIngredient4], instructions: "Heat oven to 200C/180C fan/ gas 6. Cook the vegetables in a casserole dish for 15 mins. Tip in the beans and tomatoes, season, and cook for another 10-15 mins until piping hot. Heat the pouch in the microwave on High for 1 min and serve with the chilli.", duration: "2h 25m")
+        let sample = Recipe(id: "52867", name: "Vegetarian Chilli", imageUrlString: "https://www.themealdb.com/images/media/meals/wqurxy1511453156.jpg", ingredients: [sampleIngredient1, sampleIngredient2, sampleIngredient3, sampleIngredient4], instructions: "Heat oven to 200C/180C fan/ gas 6. Cook the vegetables in a casserole dish for 15 mins. Tip in the beans and tomatoes, season, and cook for another 10-15 mins until piping hot. Heat the pouch in the microwave on High for 1 min and serve with the chilli.", duration: "2h 25m", nutrition: Nutrition(name: "Vegetarian Chilli", protein: 22, carbon: 43, fat: 12))
         RecipeDetailView(recipe: sample)
     }
 }
@@ -174,15 +180,5 @@ struct TabBarButton: View {
                 RoundedRectangle(cornerRadius: 15)
                     .fill(Color.gray.opacity(0.2))
             )
-    }
-}
-
-struct NutritionView: View{
-    var body: some View{
-        ZStack{
-            Rectangle()
-                .foregroundColor(.yellow)
-            Text("NutritionView")
-        }
     }
 }

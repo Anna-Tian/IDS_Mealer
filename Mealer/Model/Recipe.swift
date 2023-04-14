@@ -18,6 +18,7 @@ struct Recipe: Decodable, Hashable {
     let ingredients: [RecipeIngredient]
     let instructions: String
     var duration: String
+    var nutrition: Nutrition
 }
 
 extension Recipe {
@@ -25,9 +26,13 @@ extension Recipe {
         let container = try decoder.singleValueContainer()
         let recipeDictionary = try container.decode([String: String?].self)
         
-        let randomNumber: Int = Int.random(in: 6...36) * 300 // minimum 0.5h, maximum 3h, changed by 5 minutes
-        let durationH = randomNumber / 3600
-        let durationM = (randomNumber - (3600 * durationH)) / 60
+        let randomDuration: Int = Int.random(in: 6...36) * 300 // minimum 0.5h, maximum 3h, changed by 5 minutes
+        let durationH = randomDuration / 3600
+        let durationM = (randomDuration - (3600 * durationH)) / 60
+        
+        let randomProtein: Int = Int.random(in: 15...30)
+        let randomCarbon: Int = Int.random(in: 30...70)
+        let randomFat: Int = Int.random(in: 10...30)
         
         var index = 1
         var ingredients: [RecipeIngredient] = []
@@ -48,6 +53,7 @@ extension Recipe {
         self.ingredients = ingredients
         instructions = recipeDictionary["strInstructions"] as? String ?? ""
         duration = durationH > 0 ? durationM == 0 ? "\(durationH)h" : "\(durationH)h \(durationM)m" : "\(durationM)m"
+        nutrition = Nutrition(name: name, protein: randomProtein, carbon: randomCarbon, fat: randomFat)
     }
 }
 
