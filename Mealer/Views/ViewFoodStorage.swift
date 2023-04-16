@@ -11,13 +11,6 @@ struct ViewFoodStorage: View {
     @State private var showSannerSheet = false
     @State private var isAddingIngredient = false
     @State private var texts:[ScanData] = []
-    @State private var categories: [Category] = [
-        Category(name: "Vegetable", isExpanding: true),
-        Category(name: "Fruit", isExpanding: true),
-        Category(name: "Meat", isExpanding: true),
-        Category(name: "Dairy", isExpanding: true),
-        Category(name: "Pantry", isExpanding: true)
-    ]
     @State private var ingredientLibrary: [Ingredient] = [
         Ingredient(name: "Spinach", expire: 3, weight: "250 g", image: "Ingredients/Spinach", isSelected: false, isNew: true, category: "Vegetable", nutrition: Nutrition(name: "Spinach", protein: 2, carbon: 4, fat: 0), createdDate: Date()),
         Ingredient(name: "Carrot", expire: 7, weight: "500 g", image: "Ingredients/Carrot", isSelected: false, isNew: true, category: "Vegetable", nutrition: Nutrition(name: "Carrot", protein: 1, carbon: 10, fat: 0), createdDate: Date()),
@@ -62,7 +55,7 @@ struct ViewFoodStorage: View {
     
     @State private var isSelectionView: Bool = false
     @State private var isSortByCategory: Bool = false
-    @State private var isGridView: Bool = true
+    @State private var isGridView: Bool = false
     
     @State private var newIngredients:[Ingredient] = []
     
@@ -101,38 +94,41 @@ struct ViewFoodStorage: View {
                     if isSortByCategory {
                         ForEach(categories.indices, id: \.self) { index in
                             let category = categories[index]
-                            Button(action: {
-                                categories[index].isExpanding.toggle()
-                            }, label: {
-                                HStack{
-                                    Text(category.name)
-                                    Spacer()
-                                    categories[index].isExpanding ? Image(systemName: "chevron.down") : Image(systemName: "chevron.forward")
-                                }
-                            })
-                            if category.isExpanding {
-                                if isGridView {
-                                    IngredientsGridView(
-                                        newIngredients: $newIngredients,
-                                        isSelectionView: isSelectionView,
-                                        category: category.name)
+                            if !newIngredients.filter{$0.category == category.name}.isEmpty {
+                                Button(action: {
+                                    categories[index].isExpanding.toggle()
+                                }, label: {
+                                    HStack{
+                                        Text(category.name)
+                                        Spacer()
+                                        categories[index].isExpanding ? Image(systemName: "chevron.down") : Image(systemName: "chevron.forward")
+                                    }
+                                })
+                                if category.isExpanding {
+                                    if isGridView {
+                                        IngredientsGridView(
+                                            newIngredients: $newIngredients,
+                                            isSelectionView: isSelectionView,
+                                            category: category.name)
+                                    } else {
+                                        IngredientsListView(
+                                            newIngredients: $newIngredients,
+                                            isSelectionView: isSelectionView,
+                                            category: category.name)
+                                    }
                                 } else {
-                                    IngredientsListView(
-                                        newIngredients: $newIngredients,
-                                        isSelectionView: isSelectionView,
-                                        category: category.name)
+                                    Divider()
                                 }
-                            } else {
-                                Divider()
                             }
+                            
                         }
                     } else {
                         if isGridView {
                             IngredientsGridView(newIngredients: $newIngredients, isSelectionView: isSelectionView)
-                                .padding(.top, 3)
+                                .padding(.vertical, 3)
                         } else {
                             IngredientsListView(newIngredients: $newIngredients, isSelectionView: isSelectionView)
-                                .padding(.top, 3)
+                                .padding(.vertical, 3)
                         }
                     }
                 }
@@ -145,7 +141,7 @@ struct ViewFoodStorage: View {
                 makeScannerView()
             })
             .sheet(isPresented: $isAddingIngredient, content: {
-                AddIngredientView()
+                SearchIngredientLibraryView(isAddingIngredient: $isAddingIngredient, newIngredients: $newIngredients)
             })
         }
         .padding()
@@ -221,10 +217,17 @@ struct IngredientsGridView: View {
         VStack(spacing:5) {
             ZStack {
                 VStack {
-                    Image(ingredient.image)
-                        .resizable()
-                        .frame(width: viewWidth-20, height: viewWidth-10)
-                        .opacity(isSelectionView ? 0.3 : 0.8)
+                    if ingredient.image.contains("https") {
+                        Image(uiImage: "\(ingredient.image)".load())
+                            .resizable()
+                            .frame(width: viewWidth-20, height: viewWidth-10)
+                            .opacity(isSelectionView ? 0.3 : 0.8)
+                    } else {
+                        Image(ingredient.image)
+                            .resizable()
+                            .frame(width: viewWidth-20, height: viewWidth-10)
+                            .opacity(isSelectionView ? 0.3 : 0.8)
+                    }
                 }
                 .frame(width: viewWidth, height: viewWidth+10)
                 
@@ -252,7 +255,7 @@ struct IngredientsGridView: View {
                     Text("New*")
                         .frame(width: 50, height: 50)
                         .foregroundColor(Color.accentColor)
-                        .offset(x: viewWidth / 3.5, y: -50)
+                        .offset(x: viewWidth / 5, y: -30)
                 }
             }
             Text("\(ingredient.name)")
@@ -308,10 +311,17 @@ struct IngredientsListView: View {
     func ingredientListView(for ingredient: Ingredient) -> some View {
         HStack {
             ZStack {
-                Image(ingredient.image)
-                    .resizable()
-                    .frame(width: 50, height: 50)
-                    .opacity(isSelectionView ? 0.3 : 0.8)
+                if ingredient.image.contains("https") {
+                    Image(uiImage: "\(ingredient.image)".load())
+                        .resizable()
+                        .frame(width: 50, height: 50)
+                        .opacity(isSelectionView ? 0.3 : 0.8)
+                } else {
+                    Image(ingredient.image)
+                        .resizable()
+                        .frame(width: 50, height: 50)
+                        .opacity(isSelectionView ? 0.3 : 0.8)
+                }
                 
                 if (isSelectionView) {
                     if (ingredient.isSelected == true) {
@@ -470,7 +480,7 @@ struct SearchBarView: View {
     var body: some View {
         HStack {
             Image(systemName: "magnifyingglass")
-                .foregroundColor(Color.accentColor.opacity(0.8))
+                .foregroundColor(Color.gray)
             TextField("Search by name...", text: $searchText)
                 .disableAutocorrection(true)
                 .overlay(

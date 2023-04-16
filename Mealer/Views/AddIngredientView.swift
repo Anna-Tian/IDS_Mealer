@@ -7,6 +7,82 @@
 
 import SwiftUI
 
+struct SearchIngredientLibraryView: View {
+    @StateObject private var ingredientManager = IngredientManager()
+    @State private var searchText = ""
+    @Binding var isAddingIngredient: Bool
+    @State private var manualAddIngredient = false
+    @Binding var newIngredients: [Ingredient]
+    var body: some View {
+        VStack {
+            VStack{
+                
+            }
+            if let ingredientsLibrary = ingredientManager.ingredients {
+                let searchResults: [IngredientLibrary] = searchText.isEmpty ?
+                                    ingredientsLibrary :
+                                    ingredientsLibrary.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
+                NavigationView{
+                    List(searchResults, id:\.self) { ingredient in
+                        Button(action: {
+                            newIngredients.append(.init(
+                                name: ingredient.name,
+                                expire: Int.random(in: 5...30),
+                                weight: "500g",
+                                image: ingredient.imageUrlString,
+                                isSelected: false,
+                                isNew: true,
+                                category: ingredient.category,
+                                nutrition: Nutrition(
+                                    name: ingredient.name,
+                                    protein: Int.random(in: 0...10),
+                                    carbon: Int.random(in: 10...25),
+                                    fat: Int.random(in: 0...10)),
+                                createdDate: Date()
+                            ))
+                            newIngredients = newIngredients.sorted(by: {$0.expire < $1.expire})
+                            isAddingIngredient = false
+                        }) {
+                            HStack {
+                                if let ingredientImage = ingredient.imageUrlString {
+                                    AsyncImageView(urlString: ingredientImage)
+                                        .frame(width: 50, height: 50)
+                                }
+                                Text(ingredient.name)
+                                    .foregroundColor(Color.black)
+                                Spacer()
+                            }
+                        }
+                    }
+                    .searchable(text: $searchText, prompt: "Search ingredients")
+                }
+            }
+            VStack {
+                Button(action: { self.manualAddIngredient = true }) {
+                    Text("Create")
+                        .frame(width: 150)
+                        .font(.system(size: 22, weight: .medium))
+                        .foregroundColor(Color.white)
+                        .padding()
+                        .background(
+                            RoundedRectangle(cornerRadius: 50)
+                                .fill(Color.accentColor)
+                                .shadow(color: Color.gray, radius: 2, x: 1, y: 1)
+                        )
+                }
+            }
+            .sheet(isPresented: $manualAddIngredient, content: {
+                AddIngredientView()
+            })
+            
+            
+        }
+        .onAppear {
+            ingredientManager.allIngredientsRequest()
+        }
+    }
+}
+
 struct AddIngredientView: View {
     @State private var name = ""
     @State private var quantity = ""
@@ -121,6 +197,6 @@ struct AddIngredientView: View {
 
 struct AddIngredientView_Previews: PreviewProvider {
     static var previews: some View {
-        AddIngredientView()
+        SearchIngredientLibraryView(isAddingIngredient: Binding.constant(false), newIngredients: Binding.constant([]))
     }
 }

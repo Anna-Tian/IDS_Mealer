@@ -24,7 +24,7 @@ struct AsyncImageView: View {
                     .resizable()
                     .scaledToFit()
             } else {
-                Text("No Image")
+                Text("")
             }
         }
     }
