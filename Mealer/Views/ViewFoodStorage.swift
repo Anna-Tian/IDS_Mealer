@@ -61,12 +61,13 @@ struct ViewFoodStorage: View {
     private let adaptiveColumns = [
         GridItem(.flexible()),
         GridItem(.flexible()),
+        GridItem(.flexible()),
         GridItem(.flexible())
     ]
     
     @State private var isSelectionView: Bool = false
     @State private var isSortByCategory: Bool = false
-    @State private var isGridView: Bool = false
+    @State private var isGridView: Bool = true
     
     @State private var newIngredients:[Ingredient] = []
     
@@ -131,7 +132,7 @@ struct ViewFoodStorage: View {
                         }
                     } else {
                         if isGridView {
-                            LazyVGrid(columns: adaptiveColumns, spacing: 8) {
+                            LazyVGrid(columns: adaptiveColumns, spacing: 10) {
                                 IngredientsGridView(newIngredients: $newIngredients, isSelectionView: isSelectionView)
                             }
                             .padding(.top, 3)
@@ -189,7 +190,7 @@ struct IngredientsGridView: View {
     @Binding var newIngredients: [Ingredient]
     var isSelectionView: Bool;
     var category: String?
-    @State var viewWidth: CGFloat = 110;
+    @State var viewWidth: CGFloat = 81;
     
     var body: some View {
         ForEach(category != nil ? newIngredients.filter{$0.category == category} : newIngredients, id: \.id) { ingredient in
@@ -212,15 +213,15 @@ struct IngredientsGridView: View {
     }
     
     func ingredientGridView(for ingredient: Ingredient) -> some View {
-        VStack(spacing:6) {
+        VStack(spacing:5) {
             ZStack {
                 VStack {
                     Image(ingredient.image)
                         .resizable()
-                        .frame(width: viewWidth-20, height: 100)
+                        .frame(width: viewWidth-20, height: viewWidth-10)
                         .opacity(isSelectionView ? 0.3 : 0.8)
                 }
-                .frame(width: viewWidth, height: 120)
+                .frame(width: viewWidth, height: viewWidth+10)
                 
                 if ingredient.expire > 0 {
                     Text("\(ingredient.expire) days")
@@ -268,7 +269,7 @@ struct IngredientsGridView: View {
             }
             .padding(.horizontal, 5)
         }
-        .frame(width: viewWidth, height: 201, alignment: .top)
+        .frame(width: viewWidth, height: viewWidth+91, alignment: .top)
         .foregroundColor(Color.black)
         .backgroundCard(isSelected: ingredient.isSelected, expireDay: ingredient.expire)
     }
