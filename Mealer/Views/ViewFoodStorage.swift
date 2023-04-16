@@ -66,7 +66,7 @@ struct ViewFoodStorage: View {
     
     @State private var isSelectionView: Bool = false
     @State private var isSortByCategory: Bool = false
-    @State private var isGridView: Bool = true
+    @State private var isGridView: Bool = false
     
     @State private var newIngredients:[Ingredient] = []
     
@@ -166,7 +166,7 @@ struct ViewFoodStorage: View {
                 for ingredient in ingredientLibrary {
                     if (newScanData.content.contains(ingredient.name)) {
                         results.append(ingredient)
-                        newIngredients.append(ingredient)
+                        newIngredients = existingIngredients + results
                     }
                 }
                 
@@ -196,10 +196,10 @@ struct IngredientsGridView: View {
             let index = newIngredients.firstIndex(where: {$0.id == ingredient.id})!
             if !isSelectionView {
                 NavigationLink(destination: IngredientDetailView(ingredient: $newIngredients[index])) {
-                    ingredientView(for: ingredient)
+                    ingredientGridView(for: ingredient)
                 }
             } else {
-                ingredientView(for: ingredient)
+                ingredientGridView(for: ingredient)
                     .onTapGesture {
                         if isSelectionView {
                             if let index = newIngredients.firstIndex(where: { $0.id == ingredient.id }) {
@@ -211,7 +211,7 @@ struct IngredientsGridView: View {
         }
     }
     
-    func ingredientView(for ingredient: Ingredient) -> some View {
+    func ingredientGridView(for ingredient: Ingredient) -> some View {
         VStack(spacing:6) {
             ZStack {
                 VStack {
@@ -270,6 +270,81 @@ struct IngredientsGridView: View {
         .backgroundCard(isSelected: ingredient.isSelected)
     }
 }
+
+struct IngredientsListView: View {
+    @Binding var newIngredients: [Ingredient]
+    var isSelectionView: Bool;
+    var category: String?
+    
+    var body: some View {
+        ForEach(category != nil ? newIngredients.filter{$0.category == category} : newIngredients, id: \.id) { ingredient in
+            let index = newIngredients.firstIndex(where: {$0.id == ingredient.id})!
+            if !isSelectionView {
+                NavigationLink(destination: IngredientDetailView(ingredient: $newIngredients[index])) {
+                    ingredientListView(for: ingredient)
+                }
+            } else {
+                ingredientListView(for: ingredient)
+                    .onTapGesture {
+                        if isSelectionView {
+                            if let index = newIngredients.firstIndex(where: { $0.id == ingredient.id }) {
+                                newIngredients[index].isSelected.toggle()
+                            }
+                        }
+                    }
+            }
+        }
+    }
+    
+    func ingredientListView(for ingredient: Ingredient) -> some View {
+        HStack {
+            ZStack {
+                Image(ingredient.image)
+                    .resizable()
+                    .frame(width: 50, height: 50)
+                    .opacity(isSelectionView ? 0.3 : 0.8)
+                
+                if (isSelectionView) {
+                    if (ingredient.isSelected == true) {
+                        Image(systemName: "checkmark.circle.fill");
+                    } else {
+                        Image(systemName: "circle")
+                    }
+                }
+                if !ingredient.isNew {
+                    Text("New*")
+                        .frame(width: 50, height: 50)
+                        .foregroundColor(Color.accentColor)
+                        .offset(x: 50 / 3.5, y: -20)
+                }
+            }
+            .frame(width: 70, height: 70)
+            VStack(alignment: .leading) {
+                Text(ingredient.name)
+                    .font(.system(size: 18, weight: .medium))
+                Text(ingredient.weight)
+                    .font(.system(size: 14))
+            }
+            Spacer()
+            VStack{
+                if ingredient.expire > 0 {
+                    Text("\(ingredient.expire) days")
+                        .font(.system(size: 20, weight: .bold))
+                        .padding(.trailing)
+                } else {
+                    Text("Expired \(abs(ingredient.expire)) days")
+                        .font(.system(size: 20, weight: .bold))
+                        .foregroundColor(Color.red)
+                        .padding(.trailing)
+                }
+            }
+        }
+        .foregroundColor(Color.black)
+        .backgroundCard(isSelected: ingredient.isSelected)
+        .padding(.horizontal, 2)
+    }
+}
+
 
 struct countSelectedIngredients: View {
     @Binding var newIngredients: [Ingredient]
@@ -377,59 +452,3 @@ struct functionKeys: View {
     }
 }
 
-struct IngredientsListView: View {
-    @Binding var newIngredients: [Ingredient]
-    var isSelectionView: Bool;
-    var category: String?
-    
-    var body: some View {
-        ForEach(category != nil ? newIngredients.filter{$0.category == category} : newIngredients, id: \.id) { ingredient in
-            HStack {
-                ZStack {
-                    Image(ingredient.image)
-                        .resizable()
-                        .frame(width: 50, height: 50)
-                        .opacity(isSelectionView ? 0.3 : 0.8)
-                    
-                    if (isSelectionView) {
-                        if (ingredient.isSelected == true) {
-                            Image(systemName: "checkmark.circle.fill");
-                        } else {
-                            Image(systemName: "circle")
-                        }
-                    }
-                }
-                .frame(width: 70, height: 70)
-                VStack(alignment: .leading) {
-                    Text(ingredient.name)
-                        .font(.system(size: 18, weight: .medium))
-                        .foregroundColor(ingredient.isNew ? Color.accentColor : Color.black)
-                    Text(ingredient.weight)
-                        .font(.system(size: 14))
-                }
-                Spacer()
-                VStack{
-                    if ingredient.expire > 0 {
-                        Text("\(ingredient.expire) days")
-                            .font(.system(size: 20, weight: .bold))
-                            .padding(.trailing)
-                    } else {
-                        Text("Expired \(abs(ingredient.expire)) days")
-                            .font(.system(size: 20, weight: .bold))
-                            .foregroundColor(Color.red)
-                            .padding(.trailing)
-                    }
-                }
-            }
-            .backgroundCard(isSelected: ingredient.isSelected)
-            .padding(.horizontal, 2)
-            .onTapGesture {
-                if isSelectionView {
-                    if let index = newIngredients.firstIndex(where: { $0.id == ingredient.id }) {
-                        newIngredients[index].isSelected.toggle()
-                    }
-                }
-            }
-        }
-    }
-}
