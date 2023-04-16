@@ -12,13 +12,13 @@ struct ViewRecipeList: View {
     var body: some View {
         VStack {
             Text("Recipe List")
-            if let recipes = recipeManager.recipes {
-                List(recipes, id:\.self) { recipe in
-                    NavigationLink(destination: RecipeDetailView(recipe: recipe), label: {
-                        Text(recipe.name)
-                    })
-                }
-            }
+//            if let recipes = recipeManager.recipes {
+//                List(recipes, id:\.self) { recipe in
+//                    NavigationLink(destination: RecipeDetailView(recipe: recipe), label: {
+//                        Text(recipe.name)
+//                    })
+//                }
+//            }
         }
         .onAppear {
             recipeManager.randomRecipeRequest()

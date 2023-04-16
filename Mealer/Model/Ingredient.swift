@@ -21,7 +21,7 @@ struct Ingredient: Identifiable {
 }
 
 enum Sort {
-    case expireDate, category, nameAscending, nameDescending
+    case expireDate, category
 }
 
 struct Category: Identifiable {

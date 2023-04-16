@@ -35,7 +35,7 @@ struct ViewFoodStorage: View {
         Ingredient(name: "Cucumber", expire: 5, weight: "500 g", image: "Ingredients/Cucumber", isSelected: false, isNew: true, category: "Vegetable", nutrition: Nutrition(name: "Cucumber", protein: 1, carbon: 3, fat: 0), createdDate: Date()),
         Ingredient(name: "Green beans", expire: 3, weight: "250 g", image: "Ingredients/GreenBeans", isSelected: false, isNew: true, category: "Vegetable", nutrition: Nutrition(name: "Green beans", protein: 1, carbon: 7, fat: 0), createdDate: Date()),
         Ingredient(name: "Peas", expire: 15, weight: "500 g", image: "Ingredients/Peas", isSelected: false, isNew: true, category: "Vegetable", nutrition: Nutrition(name: "Peas", protein: 5, carbon: 14, fat: 0), createdDate: Date()),
-        Ingredient(name: "Corn", expire: 3, weight: "4 ears", image: "Ingredients/Corn", isSelected: false, isNew: true, category: "Vegetable", nutrition: Nutrition(name: "Corn", protein: 3, carbon: 19, fat: 1), createdDate: Date())
+        Ingredient(name: "Corn", expire: 60, weight: "4 ears", image: "Ingredients/Corn", isSelected: false, isNew: true, category: "Vegetable", nutrition: Nutrition(name: "Corn", protein: 3, carbon: 19, fat: 1), createdDate: Date())
     ]
     @State private var existingIngredients: [Ingredient] = [
         Ingredient(name: "Broccoli", expire: -3, weight: "500 g", image: "Ingredients/Broccoli", isSelected: false, isNew: false, category: "Vegetable", nutrition: Nutrition(name: "Broccoli", protein: 3, carbon: 7, fat: 0), createdDate: DateComponents(calendar: Calendar.current, year: 2023, month: 4, day: 3).date!),
@@ -65,7 +65,7 @@ struct ViewFoodStorage: View {
     ]
     
     @State private var isSelectionView: Bool = false
-    @State private var isSortByCategory: Bool = true
+    @State private var isSortByCategory: Bool = false
     @State private var isGridView: Bool = true
     
     @State private var newIngredients:[Ingredient] = []
@@ -154,6 +154,7 @@ struct ViewFoodStorage: View {
         .onAppear {
             if (newIngredients.isEmpty) {
                 newIngredients = existingIngredients + results
+                newIngredients = newIngredients.sorted(by: {$0.expire < $1.expire})
             }
         }
     }
@@ -172,6 +173,7 @@ struct ViewFoodStorage: View {
                 self.texts.append(newScanData)
             }
             self.showSannerSheet = false
+            newIngredients = newIngredients.sorted(by: {$0.expire < $1.expire})
         })
     }
 }
@@ -348,12 +350,6 @@ struct functionKeys: View {
                 Button(action: { sortIngredients(sort: .category) }) {
                     Text("Sort by category")
                 }
-                Button(action: { sortIngredients(sort: .nameAscending) }) {
-                    Text("Sort by name A to Z")
-                }
-                Button(action: { sortIngredients(sort: .nameDescending) }) {
-                    Text("Sort by name Z to A")
-                }
             } label: {
                 Image(systemName: "arrow.up.arrow.down").imageScale(.large)
             }
@@ -377,17 +373,7 @@ struct functionKeys: View {
             isSortByCategory = false
         case .category:
             isSortByCategory = true
-        case .nameAscending:
-            newIngredients = newIngredients.sorted(by: {$0.name < $1.name})
-            isSortByCategory = false
-        case .nameDescending:
-            newIngredients = newIngredients.sorted(by: {$0.name > $1.name})
-            isSortByCategory = false
         }
-        
-    }
-    private func switchView() {
-        
     }
 }
 
