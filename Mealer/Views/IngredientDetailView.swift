@@ -22,10 +22,17 @@ struct IngredientDetailView: View {
         NavigationView {
             ZStack(alignment: .bottom) {
                 VStack {
-                    Image(ingredient.image)
-                        .resizable()
-                        .frame(height: UIScreen.main.bounds.height * 0.5)
-                        .padding()
+                    if ingredient.image.contains("https") {
+                        Image(uiImage: "\(ingredient.image)".load())
+                            .resizable()
+                            .frame(height: UIScreen.main.bounds.height * 0.5)
+                            .padding()
+                    } else {
+                        Image(ingredient.image)
+                            .resizable()
+                            .frame(height: UIScreen.main.bounds.height * 0.5)
+                            .padding()
+                    }
                     Spacer()
                 }
                 ZStack(alignment: .topLeading) {

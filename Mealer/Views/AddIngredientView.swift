@@ -70,6 +70,7 @@ struct SearchIngredientLibraryView: View {
                                 .shadow(color: Color.gray, radius: 2, x: 1, y: 1)
                         )
                 }
+                .padding(.bottom)
             }
             .sheet(isPresented: $manualAddIngredient, content: {
                 AddIngredientView()
