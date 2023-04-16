@@ -58,12 +58,6 @@ struct ViewFoodStorage: View {
     ]
     
     @State private var results:[Ingredient] = []
-    private let adaptiveColumns = [
-        GridItem(.flexible()),
-        GridItem(.flexible()),
-        GridItem(.flexible()),
-        GridItem(.flexible())
-    ]
     
     @State private var isSelectionView: Bool = false
     @State private var isSortByCategory: Bool = false
@@ -71,32 +65,23 @@ struct ViewFoodStorage: View {
     
     @State private var newIngredients:[Ingredient] = []
     
+    @State private var searchText: String = ""
+    
     var body: some View {
         VStack {
-            ZStack() {
-                HStack {
-                    Spacer()
-                    Text("Food Storage")
+            HStack {
+                Spacer()
+                Text("Food Storage")
+                    .font(.system(size: 28, weight: .bold))
+                    .foregroundColor(.accentColor)
+                Spacer()
+                Button(action: {
+                    self.showSannerSheet = true
+                }, label: {
+                    Image(systemName: "plus")
                         .font(.system(size: 28, weight: .bold))
-                        .foregroundColor(.accentColor)
-                    Spacer()
-                }
-                HStack {
-                    Spacer()
-                    Button(action: {
-                        
-                    }, label: {
-                        Image(systemName: "magnifyingglass")
-                            .font(.system(size: 25, weight: .bold))
-                    })
-                    Button(action: {
-                        self.showSannerSheet = true
-                    }, label: {
-                        Image(systemName: "plus")
-                            .font(.system(size: 28, weight: .bold))
-                    })
-                    .disabled(isSelectionView)
-                }
+                })
+                .disabled(isSelectionView)
             }
             VStack {
                 functionKeys(
@@ -105,6 +90,7 @@ struct ViewFoodStorage: View {
                     isSortByCategory: $isSortByCategory,
                     isGridView: $isGridView
                 )
+                SearchBarView(searchText: $searchText, newIngredients: $newIngredients)
                 ScrollView {
                     if isSortByCategory {
                         ForEach(categories.indices, id: \.self) { index in
@@ -120,11 +106,15 @@ struct ViewFoodStorage: View {
                             })
                             if category.isExpanding {
                                 if isGridView {
-                                    LazyVGrid(columns: adaptiveColumns, spacing: 8) {
-                                        IngredientsGridView(newIngredients: $newIngredients, isSelectionView: isSelectionView, category: category.name)
-                                    }
+                                    IngredientsGridView(
+                                        newIngredients: $newIngredients,
+                                        isSelectionView: isSelectionView,
+                                        category: category.name)
                                 } else {
-                                    IngredientsListView(newIngredients: $newIngredients, isSelectionView: isSelectionView, category: category.name)
+                                    IngredientsListView(
+                                        newIngredients: $newIngredients,
+                                        isSelectionView: isSelectionView,
+                                        category: category.name)
                                 }
                             } else {
                                 Divider()
@@ -132,10 +122,8 @@ struct ViewFoodStorage: View {
                         }
                     } else {
                         if isGridView {
-                            LazyVGrid(columns: adaptiveColumns, spacing: 10) {
-                                IngredientsGridView(newIngredients: $newIngredients, isSelectionView: isSelectionView)
-                            }
-                            .padding(.top, 3)
+                            IngredientsGridView(newIngredients: $newIngredients, isSelectionView: isSelectionView)
+                                .padding(.top, 3)
                         } else {
                             IngredientsListView(newIngredients: $newIngredients, isSelectionView: isSelectionView)
                                 .padding(.top, 3)
@@ -159,6 +147,7 @@ struct ViewFoodStorage: View {
             }
         }
     }
+    
     private func makeScannerView() -> ScannerView {
         ScannerView(completion: {
             textPerPage in
@@ -191,23 +180,30 @@ struct IngredientsGridView: View {
     var isSelectionView: Bool;
     var category: String?
     @State var viewWidth: CGFloat = 81;
+    private let adaptiveColumns = [
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
     
     var body: some View {
-        ForEach(category != nil ? newIngredients.filter{$0.category == category} : newIngredients, id: \.id) { ingredient in
-            let index = newIngredients.firstIndex(where: {$0.id == ingredient.id})!
-            if !isSelectionView {
-                NavigationLink(destination: IngredientDetailView(ingredient: $newIngredients[index])) {
+        LazyVGrid(columns: adaptiveColumns, spacing: 10) {
+            ForEach(category != nil ? newIngredients.filter{$0.category == category} : newIngredients, id: \.id) { ingredient in
+                let index = newIngredients.firstIndex(where: {$0.id == ingredient.id})!
+                if !isSelectionView {
+                    NavigationLink(destination: IngredientDetailView(ingredient: $newIngredients[index])) {
+                        ingredientGridView(for: ingredient)
+                    }
+                } else {
                     ingredientGridView(for: ingredient)
-                }
-            } else {
-                ingredientGridView(for: ingredient)
-                    .onTapGesture {
-                        if isSelectionView {
+                        .onTapGesture {
                             if let index = newIngredients.firstIndex(where: { $0.id == ingredient.id }) {
                                 newIngredients[index].isSelected.toggle()
                             }
                         }
-                    }
+                        .multilineTextAlignment(.center)
+                }
             }
         }
     }
@@ -454,6 +450,49 @@ struct functionKeys: View {
         case .category:
             isSortByCategory = true
         }
+    }
+}
+
+struct SearchBarView: View {
+    @Binding var searchText: String
+    @Binding var newIngredients: [Ingredient]
+    @State private var allIngredients: [Ingredient] = []
+    
+    var body: some View {
+        HStack {
+            Image(systemName: "magnifyingglass")
+                .foregroundColor(Color.accentColor.opacity(0.8))
+            TextField("Search by name...", text: $searchText)
+                .disableAutocorrection(true)
+                .overlay(
+                    Image(systemName: "xmark.circle.fill")
+                        .padding()
+                        .offset(x: 10)
+                        .foregroundColor(Color.accentColor.opacity(0.8))
+                        .opacity(searchText.isEmpty ? 0.0 : 1.0)
+                        .onTapGesture {
+                            UIApplication.shared.endEditing()
+                            searchText = ""
+                            newIngredients = allIngredients
+                        }
+                    ,alignment: .trailing
+                )
+                .onChange(of: searchText) {newSearch in
+                    newIngredients = newSearch.isEmpty ? allIngredients : allIngredients.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
+                }
+                .onAppear {
+                    allIngredients = newIngredients
+                }
+        }
+        .padding(10)
+        .background(
+            RoundedRectangle(cornerRadius: 10)
+                .fill(Color.white)
+                .shadow(
+                    color: Color.gray,
+                    radius: 1, x:0, y:0
+                )
+        )
     }
 }
 

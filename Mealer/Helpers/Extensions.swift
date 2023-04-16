@@ -11,7 +11,7 @@ extension View {
     func backgroundCard(isSelected: Bool, expireDay: Int) -> some View {
         self.background(
             RoundedRectangle(cornerRadius: 5)
-                .fill(isSelected ? Color.accentColor.opacity(0.6) : Color.white)
+                .fill(isSelected ? Color.accentColor : Color.white)
                 .shadow(color: expireDay > 0 ? expireDay < 3 ? Color.yellow : Color.gray : Color.red, radius: 2, x: 0, y: 0)
         )
     }
@@ -60,5 +60,11 @@ extension String {
             
         }
         return UIImage()
+    }
+}
+
+extension UIApplication {
+    func endEditing() {
+        sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }
