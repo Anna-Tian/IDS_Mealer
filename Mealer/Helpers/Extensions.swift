@@ -16,6 +16,14 @@ extension View {
         )
     }
     
+    func backgroundTextField() -> some View {
+        self.background(
+            RoundedRectangle(cornerRadius: 10)
+                .fill(Color.white)
+                .shadow(color: Color.gray, radius: 1, x:0, y:0)
+        )
+    }
+    
     func popupNavigationView<Content: View>(show: Binding<Bool>, horizontalPadding: CGFloat = 40, heightDouble: Double = 1.7, @ViewBuilder content: @escaping ()->Content)->some View{
         return self
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)

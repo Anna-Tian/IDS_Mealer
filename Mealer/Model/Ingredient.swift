@@ -29,3 +29,5 @@ struct Category: Identifiable {
     let name: String
     var isExpanding: Bool
 }
+
+var quantityUnits: [String] = ["kg", "g","L", "ml", "bundle", "bag", "can", "pc", "cup", "bottle"]

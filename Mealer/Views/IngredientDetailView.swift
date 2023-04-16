@@ -14,7 +14,6 @@ struct IngredientDetailView: View {
     private var manualQuantityNum: Int {
         return Int(manualQuantityNumText) ?? 0
     }
-    var quantityUnits: [String] = ["kg", "g","L", "ml", "bundle", "bag", "can", "pc", "cup", "bottle"]
     @State var manualQuantityUnit: String = "kg"
     
     @State var showPopup: Bool = false

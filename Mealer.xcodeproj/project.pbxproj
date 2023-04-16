@@ -19,6 +19,7 @@
 		957AAC6529DF10ED00983738 /* AsyncImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957AAC6429DF10ED00983738 /* AsyncImageView.swift */; };
 		957AAC6B29DF389D00983738 /* IngredientManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957AAC6A29DF389D00983738 /* IngredientManager.swift */; };
 		957AAC6D29DFCCE500983738 /* Nutrition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957AAC6C29DFCCE500983738 /* Nutrition.swift */; };
+		9597AC8329EBD2E00040F81F /* AddIngredientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9597AC8229EBD2E00040F81F /* AddIngredientView.swift */; };
 		95B98BF629C88D2C00EF4E73 /* MealerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B98BF529C88D2C00EF4E73 /* MealerApp.swift */; };
 		95B98BF829C88D2C00EF4E73 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B98BF729C88D2C00EF4E73 /* ContentView.swift */; };
 		95B98BFA29C88D2D00EF4E73 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 95B98BF929C88D2D00EF4E73 /* Assets.xcassets */; };
@@ -42,6 +43,7 @@
 		957AAC6429DF10ED00983738 /* AsyncImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImageView.swift; sourceTree = "<group>"; };
 		957AAC6A29DF389D00983738 /* IngredientManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientManager.swift; sourceTree = "<group>"; };
 		957AAC6C29DFCCE500983738 /* Nutrition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nutrition.swift; sourceTree = "<group>"; };
+		9597AC8229EBD2E00040F81F /* AddIngredientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddIngredientView.swift; sourceTree = "<group>"; };
 		95B98BF229C88D2C00EF4E73 /* Mealer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mealer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		95B98BF529C88D2C00EF4E73 /* MealerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealerApp.swift; sourceTree = "<group>"; };
 		95B98BF729C88D2C00EF4E73 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -73,6 +75,7 @@
 				956C9E1729D1BB1100DE1FA0 /* ViewProfile.swift */,
 				950E252829DAD59C00FA1289 /* IngredientDetailView.swift */,
 				957AAC6229DF0B6500983738 /* RecipeDetailView.swift */,
+				9597AC8229EBD2E00040F81F /* AddIngredientView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -229,6 +232,7 @@
 				956C9E1029D1BAE200DE1FA0 /* ViewRecipeList.swift in Sources */,
 				957AAC5C29DF063C00983738 /* Ingredient.swift in Sources */,
 				950E252929DAD59C00FA1289 /* IngredientDetailView.swift in Sources */,
+				9597AC8329EBD2E00040F81F /* AddIngredientView.swift in Sources */,
 				957AAC6529DF10ED00983738 /* AsyncImageView.swift in Sources */,
 				957AAC6B29DF389D00983738 /* IngredientManager.swift in Sources */,
 				957AAC5E29DF071D00983738 /* Recipe.swift in Sources */,

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ViewFoodStorage: View {
     @State private var showSannerSheet = false
+    @State private var isAddingIngredient = false
     @State private var texts:[ScanData] = []
     @State private var categories: [Category] = [
         Category(name: "Vegetable", isExpanding: true),
@@ -75,12 +76,17 @@ struct ViewFoodStorage: View {
                     .font(.system(size: 28, weight: .bold))
                     .foregroundColor(.accentColor)
                 Spacer()
-                Button(action: {
-                    self.showSannerSheet = true
-                }, label: {
+                Menu{
+                    Button(action: { self.showSannerSheet = true }) {
+                        Text("Scan Receipt")
+                    }
+                    Button(action: { self.isAddingIngredient = true}) {
+                        Text("Manual Add")
+                    }
+                } label: {
                     Image(systemName: "plus")
                         .font(.system(size: 28, weight: .bold))
-                })
+                }
                 .disabled(isSelectionView)
             }
             VStack {
@@ -137,6 +143,9 @@ struct ViewFoodStorage: View {
             }
             .sheet(isPresented: $showSannerSheet, content: {
                 makeScannerView()
+            })
+            .sheet(isPresented: $isAddingIngredient, content: {
+                AddIngredientView()
             })
         }
         .padding()
@@ -485,14 +494,7 @@ struct SearchBarView: View {
                 }
         }
         .padding(10)
-        .background(
-            RoundedRectangle(cornerRadius: 10)
-                .fill(Color.white)
-                .shadow(
-                    color: Color.gray,
-                    radius: 1, x:0, y:0
-                )
-        )
+        .backgroundTextField()
     }
 }
 
