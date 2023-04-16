@@ -226,9 +226,12 @@ struct IngredientsGridView: View {
                     Text("\(ingredient.expire) days")
                         .font(.system(size: 20, weight: .bold))
                         .foregroundStyle(
-                            Color.black.shadow(
-                                .drop(color: .white, radius: 1, x: 1, y: 1)
-                            )
+                            ingredient.expire < 3 ?
+                            Color.yellow.shadow(
+                                .drop(color: .black, radius: 1, x: 1, y: 1)
+                            ) : Color.black.shadow(
+                                    .drop(color: .white, radius: 1, x: 1, y: 1)
+                                )
                         )
                 } else {
                     Text("Expired \(abs(ingredient.expire)) days")
@@ -267,7 +270,7 @@ struct IngredientsGridView: View {
         }
         .frame(width: viewWidth, height: 201, alignment: .top)
         .foregroundColor(Color.black)
-        .backgroundCard(isSelected: ingredient.isSelected)
+        .backgroundCard(isSelected: ingredient.isSelected, expireDay: ingredient.expire)
     }
 }
 
@@ -311,7 +314,7 @@ struct IngredientsListView: View {
                         Image(systemName: "circle")
                     }
                 }
-                if !ingredient.isNew {
+                if ingredient.isNew {
                     Text("New*")
                         .frame(width: 50, height: 50)
                         .foregroundColor(Color.accentColor)
@@ -330,6 +333,7 @@ struct IngredientsListView: View {
                 if ingredient.expire > 0 {
                     Text("\(ingredient.expire) days")
                         .font(.system(size: 20, weight: .bold))
+                        .foregroundColor(ingredient.expire < 3 ? Color.yellow : Color.black)
                         .padding(.trailing)
                 } else {
                     Text("Expired \(abs(ingredient.expire)) days")
@@ -340,7 +344,7 @@ struct IngredientsListView: View {
             }
         }
         .foregroundColor(Color.black)
-        .backgroundCard(isSelected: ingredient.isSelected)
+        .backgroundCard(isSelected: ingredient.isSelected, expireDay: ingredient.expire)
         .padding(.horizontal, 2)
     }
 }

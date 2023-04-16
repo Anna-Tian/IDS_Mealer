@@ -8,11 +8,11 @@
 import SwiftUI
 
 extension View {
-    func backgroundCard(isSelected: Bool) -> some View {
+    func backgroundCard(isSelected: Bool, expireDay: Int) -> some View {
         self.background(
             RoundedRectangle(cornerRadius: 5)
                 .fill(isSelected ? Color.accentColor.opacity(0.6) : Color.white)
-                .shadow(color: .gray, radius: 2, x: 0, y: 0)
+                .shadow(color: expireDay > 0 ? expireDay < 3 ? Color.yellow : Color.gray : Color.red, radius: 2, x: 0, y: 0)
         )
     }
     
