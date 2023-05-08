@@ -21,38 +21,87 @@ struct IngredientDetailView: View {
     var body: some View {
         NavigationView {
             ZStack(alignment: .bottom) {
-                VStack {
-                    if ingredient.image.contains("https") {
-                        Image(uiImage: "\(ingredient.image)".load())
-                            .resizable()
-                            .frame(height: UIScreen.main.bounds.height * 0.5)
-                            .padding()
-                    } else {
-                        Image(ingredient.image)
-                            .resizable()
-                            .frame(height: UIScreen.main.bounds.height * 0.5)
-                            .padding()
-                    }
-                    Spacer()
-                }
                 ZStack(alignment: .topLeading) {
                     RoundedRectangle(cornerRadius: 50)
-                        .fill(Color.gray.opacity(0.2))
-                        .frame(width: UIScreen.main.bounds.width,height: UIScreen.main.bounds.height * 0.6)
-                    VStack(alignment: .leading, spacing: 15) {
+                        .fill(Color("AccentColor").opacity(0.6))
+                        .frame(
+                            width: UIScreen.main.bounds.width,
+                            height: UIScreen.main.bounds.height * 0.35
+                        )
+                        .shadow(color: Color("AccentColor"), radius: 50, x: 0, y: 8)
+//                    VStack(alignment: .center) {
+//                        if ingredient.image.contains("https") {
+//                            Image(uiImage: "\(ingredient.image)".load())
+//                                .resizable()
+//                                .frame(width: 250, height: 250)
+//                                .offset(x: UIScreen.main.bounds.width * 0.15,
+//                                        y: UIScreen.main.bounds.height * 0.18)
+//                                .padding()
+//                        } else {
+//                            Image(ingredient.image)
+//                                .resizable()
+//                                .frame(width: 250, height: 250)
+//                                .offset(x: 50,
+//                                        y: 100)
+//                                .padding()
+//                        }
+//                        Spacer()
+//                    }
+                    VStack {
+                        Text("")
+                        Spacer()
+                    }
+                }
+                
+                ZStack(alignment: .topLeading) {
+                    VStack(alignment: .center) {
+                        Spacer()
+                        if ingredient.image.contains("https") {
+                            Image(uiImage: "\(ingredient.image)".load())
+                                .resizable()
+                                .frame(width: 250, height: 250)
+                                .offset(x: UIScreen.main.bounds.width * 0.15,
+                                        y: UIScreen.main.bounds.height * 0.18)
+                                .padding()
+                        } else {
+                            Image(ingredient.image)
+                                .resizable()
+                                .frame(width: 250, height: 250)
+                                .padding()
+                        }
+                        Spacer()
+                        Spacer()
+                        Spacer()
+                    }
+                }
+                
+                
+                ZStack(alignment: .topLeading) {
+                    RoundedRectangle(cornerRadius: 0)
+                        .fill(Color("BackgroundColor").opacity(0))
+                        .frame(
+                            width: UIScreen.main.bounds.width,
+                            height: UIScreen.main.bounds.height * 0.5
+                        )
+                    VStack(alignment: .leading, spacing: 10) {
                         Text(ingredient.name)
                             .font(.system(size: 28, weight: .medium))
+                            .modifier(TextModifier())
+                            .modifier(TextModifier())
                         Text("Added on \(ingredient.createdDate.formatted(date: .complete, time: .omitted))")
                             .font(.system(size: 19))
+                            .modifier(TextModifier())
                         
                         Text("Detail")
                             .font(.system(size: 28, weight: .medium))
+                            .modifier(TextModifier())
                         HStack {
                             Image("Icons/fish")
                                 .resizable()
                                 .frame(width: 34, height: 34)
                             Text("Protein: \(ingredient.nutrition.protein) / 100g")
                                 .font(.system(size: 19))
+                                .modifier(TextModifier())
                         }
                         HStack {
                             Image("Icons/carbon")
@@ -60,6 +109,7 @@ struct IngredientDetailView: View {
                                 .frame(width: 34, height: 34)
                             Text("Carbon: \(ingredient.nutrition.carbon) / 100g")
                                 .font(.system(size: 19))
+                                .modifier(TextModifier())
                         }
                         HStack {
                             Image("Icons/fat")
@@ -67,6 +117,7 @@ struct IngredientDetailView: View {
                                 .frame(width: 34, height: 34)
                             Text("Fat: \(ingredient.nutrition.fat) / 100g")
                                 .font(.system(size: 19))
+                                .modifier(TextModifier())
                         }
                         HStack {
                             Image("Icons/symbols")
@@ -74,6 +125,7 @@ struct IngredientDetailView: View {
                                 .frame(width: 34, height: 34)
                             Text("Category: \(ingredient.category)")
                                 .font(.system(size: 19))
+                                .modifier(TextModifier())
                         }
                         HStack {
                             Image("Icons/basket")
@@ -82,7 +134,7 @@ struct IngredientDetailView: View {
                             HStack {
                                 Text("Quantity: ")
                                     .font(.system(size: 19))
-                                    .foregroundColor(Color.black)
+                                    .modifier(TextModifier())
                                 Button(action: {
                                     withAnimation{
                                         showPopup.toggle()
@@ -92,17 +144,17 @@ struct IngredientDetailView: View {
                                         .padding(.vertical, 5)
                                         .padding(.horizontal)
                                         .font(.system(size: 19))
-                                        .foregroundColor(Color.black)
+                                        .modifier(TextModifier())
                                         .background(
                                             RoundedRectangle(cornerRadius: 5)
-                                                .fill(Color.gray.opacity(0.2))
+                                                .fill(Color.gray.opacity(0.15))
                                         )
                                 }
                                 
                             }
                         }
                         HStack {
-                            Image(systemName: "calendar")
+                            Image("Icons/calendar")
                                 .resizable()
                                 .padding(3)
                                 .foregroundColor(Color.accentColor)
@@ -110,7 +162,7 @@ struct IngredientDetailView: View {
                             HStack {
                                 Text("Expiry Date:")
                                     .font(.system(size: 19))
-                                    .foregroundColor(Color.black)
+                                    .modifier(TextModifier())
                                 DatePicker(
                                     "",
                                     selection: Binding(
@@ -119,6 +171,7 @@ struct IngredientDetailView: View {
                                     ),
                                     displayedComponents: [.date]
                                 )
+                                .modifier(TextModifier())
                                 .onChange(of: manualExpirationDate) { newDate in
                                     let expireInterval = Calendar.current.dateComponents([.day], from: ingredient.createdDate, to: newDate!).day!
                                     ingredient.expire = expireInterval
@@ -131,6 +184,7 @@ struct IngredientDetailView: View {
                 }
             }
             .edgesIgnoringSafeArea(.vertical)
+            .background(Color("BackgroundColor"))
             .onAppear() {
                 let weightParts = ingredient.weight.split(separator: " ")
                 if let numText = weightParts.first, let unit = weightParts.last {
@@ -144,7 +198,7 @@ struct IngredientDetailView: View {
                 }
                 calculateManualExperiationDate()
             }
-        }
+        }.accentColor(Color.black)
         .popupNavigationView(show: $showPopup, horizontalPadding: 100, heightDouble: 4) {
             VStack {
                 Spacer()
@@ -202,7 +256,7 @@ struct IngredientDetailView: View {
 
 struct IngredientDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        let sample = Ingredient(name: "Apples", expire: 10, weight: "1 kg", image: "Ingredients/Apples", isSelected: false, isNew: false, category: "Fruit", nutrition: Nutrition(name: "Apples", protein: 0, carbon: 14, fat: 0), createdDate: DateComponents(calendar: Calendar.current, year: 2023, month: 4, day: 3).date!)
+        let sample = Ingredient(name: "Petuna Salmon Portions", expire: 10, weight: "1 kg", image: "Ingredients/Eggplant", isSelected: false, isNew: false, category: "Fruit", nutrition: Nutrition(name: "Apples", protein: 0, carbon: 14, fat: 0), createdDate: DateComponents(calendar: Calendar.current, year: 2023, month: 4, day: 3).date!)
         IngredientDetailView(ingredient: Binding.constant(sample))
     }
 }

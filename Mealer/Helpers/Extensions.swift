@@ -12,7 +12,7 @@ extension View {
         self.background(
             RoundedRectangle(cornerRadius: 5)
                 .fill(isSelected ? Color.accentColor : Color.white)
-                .shadow(color: expireDay > 0 ? expireDay < 3 ? Color.yellow : Color.gray : Color.red, radius: 2, x: 0, y: 0)
+                .shadow(color: expireDay > 0 ? expireDay < 3 ? Color.yellow : Color("ShadowColor") : Color.accentColor, radius: 2, x: 0, y: 2)
         )
     }
     
@@ -74,5 +74,12 @@ extension String {
 extension UIApplication {
     func endEditing() {
         sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+}
+
+struct TextModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .foregroundColor(Color("TextColor"))
     }
 }

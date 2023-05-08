@@ -29,7 +29,8 @@ struct ViewFoodStorage: View {
         Ingredient(name: "Cucumber", expire: 5, weight: "2 pcs", image: "Ingredients/Cucumber", isSelected: false, isNew: true, category: "Vegetable", nutrition: Nutrition(name: "Cucumber", protein: 1, carbon: 3, fat: 0), createdDate: Date()),
         Ingredient(name: "Green beans", expire: 3, weight: "1 bag", image: "Ingredients/GreenBeans", isSelected: false, isNew: true, category: "Vegetable", nutrition: Nutrition(name: "Green beans", protein: 1, carbon: 7, fat: 0), createdDate: Date()),
         Ingredient(name: "Peas", expire: 15, weight: "1 bag", image: "Ingredients/Peas", isSelected: false, isNew: true, category: "Vegetable", nutrition: Nutrition(name: "Peas", protein: 5, carbon: 14, fat: 0), createdDate: Date()),
-        Ingredient(name: "Corn", expire: 60, weight: "4 ears", image: "Ingredients/Corn", isSelected: false, isNew: true, category: "Vegetable", nutrition: Nutrition(name: "Corn", protein: 3, carbon: 19, fat: 1), createdDate: Date())
+        Ingredient(name: "Petuna Salmon Portions", expire: 30, weight: "1 bag", image: "Ingredients/PetunaSalmonPortions", isSelected: false, isNew: true, category: "Vegetable", nutrition: Nutrition(name: "Peas", protein: 5, carbon: 14, fat: 0), createdDate: Date()),
+        Ingredient(name: "Corn Kernels", expire: 60, weight: "500 g", image: "Ingredients/Corn", isSelected: false, isNew: true, category: "Vegetable", nutrition: Nutrition(name: "Corn", protein: 3, carbon: 19, fat: 1), createdDate: Date())
     ]
     @State private var existingIngredients: [Ingredient] = [
         Ingredient(name: "Broccoli", expire: -3, weight: "500 g", image: "Ingredients/Broccoli", isSelected: false, isNew: false, category: "Vegetable", nutrition: Nutrition(name: "Broccoli", protein: 3, carbon: 7, fat: 0), createdDate: DateComponents(calendar: Calendar.current, year: 2023, month: 4, day: 3).date!),
@@ -72,9 +73,11 @@ struct ViewFoodStorage: View {
                 Menu{
                     Button(action: { self.showSannerSheet = true }) {
                         Text("Scan Receipt")
+                            .modifier(TextModifier())
                     }
                     Button(action: { self.isAddingIngredient = true}) {
                         Text("Manual Add")
+                            .modifier(TextModifier())
                     }
                 } label: {
                     Image(systemName: "plus")
@@ -100,6 +103,7 @@ struct ViewFoodStorage: View {
                                 }, label: {
                                     HStack{
                                         Text(category.name)
+                                            .modifier(TextModifier())
                                         Spacer()
                                         categories[index].isExpanding ? Image(systemName: "chevron.down") : Image(systemName: "chevron.forward")
                                     }
@@ -238,7 +242,7 @@ struct IngredientsGridView: View {
                             ingredient.expire < 3 ?
                             Color.yellow.shadow(
                                 .drop(color: .black, radius: 1, x: 1, y: 1)
-                            ) : Color.black.shadow(
+                            ) : Color("TextColor").shadow(
                                     .drop(color: .white, radius: 1, x: 1, y: 1)
                                 )
                         )
@@ -260,11 +264,13 @@ struct IngredientsGridView: View {
             }
             Text("\(ingredient.name)")
                 .font(.system(size: 16, weight: .medium))
+                .modifier(TextModifier())
                 .frame(width: viewWidth, height: 40, alignment: .top)
                 .multilineTextAlignment(.center)
                 .lineLimit(2)
             HStack {
                 Text("\(ingredient.weight)")
+                    .modifier(TextModifier())
                     .frame(height: 20, alignment: .top)
                 Spacer()
                 if (isSelectionView) {
@@ -341,6 +347,7 @@ struct IngredientsListView: View {
             VStack(alignment: .leading) {
                 Text(ingredient.name)
                     .font(.system(size: 18, weight: .medium))
+                    .multilineTextAlignment(.leading)
                 Text(ingredient.weight)
                     .font(.system(size: 14))
             }
@@ -379,6 +386,7 @@ struct countSelectedIngredients: View {
                  countIngredients == 1 ?
                  "1 Ingredient Selected" : "\(countIngredients) Ingredients Selected"
                  : "Select Ingredients")
+            .modifier(TextModifier())
             Spacer()
             Button{
                 isShowingDialog = true
@@ -441,9 +449,11 @@ struct functionKeys: View {
             Menu{
                 Button(action: { sortIngredients(sort: .expireDate) }) {
                     Text("Sort by expire date")
+                        .modifier(TextModifier())
                 }
                 Button(action: { sortIngredients(sort: .category) }) {
                     Text("Sort by category")
+                        .modifier(TextModifier())
                 }
             } label: {
                 Image(systemName: "arrow.up.arrow.down").imageScale(.large)
